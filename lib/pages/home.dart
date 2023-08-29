@@ -3,31 +3,48 @@ import 'package:provider/provider.dart';
 
 import '../models/driver.dart';
 import '../models/vehicle.dart';
-import '../providers/home_provider.dart';
+import '../providers/app_provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/strings.dart';
 
 import '../widgets/forms/custom_input.dart';
 import '../widgets/forms/custom_dropdown.dart';
-import '../widgets/custom_app_bar.dart';
 import '../widgets/home/welcome_container.dart';
-import '../widgets/custom_snackbar_error.dart';
+import '../widgets/custom_flushbar_error.dart';
 import '../widgets/custom_button.dart';
+import 'driver_home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  List<Widget> _buildDriverDocument(
+      AppProvider appProvider, BuildContext context) {
+    return [
+      CustomInput(
+        controller: appProvider.cpfController,
+        keyboardType: TextInputType.number,
+        textColor: ColorsConstants.textColor,
+      ),
+      CustomButton(
+        label: HomeStrings.buttonSend,
+        onPressed: () => _handleFetchDriver(context, appProvider),
+        textColor: ColorsConstants.backgroundColor,
+        buttonColor: ColorsConstants.primaryColor,
+      ),
+    ];
+  }
+
   Future<void> _handleFetchDriver(
-      BuildContext context, HomeProvider homeProvider) async {
+      BuildContext context, AppProvider appProvider) async {
     var navigator = Navigator.of(context);
-    await homeProvider.fetchDriver();
-    if (homeProvider.driverList != null) {
+    await appProvider.fetchDriver();
+    if (appProvider.driverList != null && appProvider.driverList!.isNotEmpty) {
       final isConfirmed = await _confirmDriverDialog(
-          navigator, homeProvider.driverList![0].name);
+          navigator, appProvider.driverList![0].name);
       if (isConfirmed == true) {
-        if (homeProvider.driverList!.length == 1) {
-          homeProvider.selectDriver(homeProvider.driverList![0]);
+        if (appProvider.driverList!.length == 1) {
+          appProvider.selectDriver(appProvider.driverList![0]);
         }
       }
     }
@@ -54,116 +71,99 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  List<Widget> _buildCompanySelection(
+      AppProvider appProvider, BuildContext context) {
+    return [
+      CustomDropdown<DriverModel>(
+        items: appProvider.driverList,
+        hint: HomeStrings.inputHintCompany,
+        onChanged: (value) {
+          if (value != null) appProvider.selectDriver(value);
+        },
+        itemText: (item) => item.company.name,
+      ),
+      CustomButton(
+        label: HomeStrings.labelBack,
+        onPressed: appProvider.resetSelection,
+        textColor: ColorsConstants.backgroundColor,
+        buttonColor: ColorsConstants.primaryColor,
+      ),
+    ];
+  }
+
+  List<Widget> _buildVehicleSelection(
+      AppProvider appProvider, BuildContext context) {
+    return [
+      CustomDropdown<VehicleModel>(
+        items: appProvider.vehiclesList,
+        hint: HomeStrings.inputHintVehicle,
+        onChanged: (value) {
+          if (value != null) appProvider.selectVehicle(value);
+        },
+        itemText: (item) =>
+            '${item.plate} - ${item.manufacturer} / ${item.model}',
+      ),
+      CustomButton(
+        label: HomeStrings.labelBack,
+        onPressed: appProvider.resetSelection,
+        textColor: ColorsConstants.backgroundColor,
+        buttonColor: ColorsConstants.primaryColor,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => HomeProvider(),
-      child: Consumer<HomeProvider>(
-        builder: (context, homeProvider, child) {
-          return ValueListenableBuilder<String?>(
-            valueListenable: homeProvider.errorNotifier,
-            builder: (context, errorMessage, _) {
-              if (errorMessage != null) {
-                Future.delayed(Duration.zero, () {
-                  customSnackBarError(errorMessage, context);
-                  homeProvider.errorNotifier.value = null;
-                });
-              }
-              return Scaffold(
-                appBar: CustomAppBar(
-                    backgroundColor: ColorsConstants.backgroundColor),
-                body: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Stack(
-                    children: [
-                      WelcomeContainer(textColor: ColorsConstants.textColor),
-                      if (homeProvider.isLoading) ...[
-                        const Center(child: CircularProgressIndicator()),
-                      ] else ...[
-                        SingleChildScrollView(
-                          padding: const EdgeInsets.only(top: 300),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (homeProvider.selectedDriver == null &&
-                                  homeProvider.driverList == null) ...[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomInput(
-                                      controller: homeProvider.cpfController,
-                                      keyboardType: TextInputType.number,
-                                      textColor: ColorsConstants.textColor,
-                                    ),
-                                    CustomButton(
-                                      label: HomeStrings.buttonSend,
-                                      onPressed: () => _handleFetchDriver(
-                                          context, homeProvider),
-                                      textColor:
-                                          ColorsConstants.backgroundColor,
-                                      buttonColor: ColorsConstants.primaryColor,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                              if (homeProvider.selectedDriver == null &&
-                                  homeProvider.driverList != null) ...[
-                                CustomDropdown<DriverModel>(
-                                  items: homeProvider.driverList,
-                                  hint: HomeStrings.inputHintCompany,
-                                  onChanged: (value) async {
-                                    if (value == null) return;
-                                    homeProvider.selectDriver(value);
-                                  },
-                                  itemText: (item) => item.company.name,
-                                ),
-                                CustomButton(
-                                  label: HomeStrings.labelBack,
-                                  onPressed: homeProvider.resetSelection,
-                                  textColor: ColorsConstants.backgroundColor,
-                                  buttonColor: ColorsConstants.primaryColor,
-                                ),
-                              ],
-                              if (homeProvider.selectedDriver != null &&
-                                  homeProvider.selectedVehicle == null) ...[
-                                CustomDropdown<VehicleModel>(
-                                  items: homeProvider.vehiclesList,
-                                  hint: HomeStrings.inputHintVehicle,
-                                  onChanged: (value) async {
-                                    if (value == null) return;
-                                    homeProvider.selectVehicle(value);
-                                  },
-                                  itemText: (item) =>
-                                      '${item.plate} - ${item.manufacturer} / ${item.model}',
-                                ),
-                                CustomButton(
-                                  label: HomeStrings.labelBack,
-                                  onPressed: homeProvider.resetSelection,
-                                  textColor: ColorsConstants.backgroundColor,
-                                  buttonColor: ColorsConstants.primaryColor,
-                                ),
-                              ],
-                              if (homeProvider.selectedDriver != null &&
-                                  homeProvider.selectedVehicle != null) ...[
-                                Text(
-                                    'Motorista: ${homeProvider.selectedDriver!.name}'),
-                                Text(
-                                    'Empresa: ${homeProvider.selectedDriver!.company.name}'),
-                                Text(
-                                    'Veículo: ${homeProvider.selectedVehicle!.plate} - ${homeProvider.selectedVehicle!.manufacturer} / ${homeProvider.selectedVehicle!.model}'),
-                              ],
-                            ],
-                          ),
+    return Consumer<AppProvider>(
+      builder: (context, appProvider, child) {
+        if (appProvider.selectedVehicle != null) {
+          Future.delayed(Duration.zero, () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const DriverHome()),
+            );
+          });
+        }
+        return ValueListenableBuilder<String?>(
+          valueListenable: appProvider.errorNotifier,
+          builder: (context, errorMessage, _) {
+            if (errorMessage != null) {
+              customFlushBarError(errorMessage, context);
+              appProvider.errorNotifier.value = null;
+            }
+            return Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Stack(
+                  children: [
+                    WelcomeContainer(textColor: ColorsConstants.textColor),
+                    if (appProvider.isLoading)
+                      const Center(child: CircularProgressIndicator()),
+                    if (!appProvider.isLoading)
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.only(top: 300),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (appProvider.selectedDriver == null &&
+                                appProvider.driverList == null)
+                              ..._buildDriverDocument(appProvider, context),
+                            if (appProvider.selectedDriver == null &&
+                                appProvider.driverList != null)
+                              ..._buildCompanySelection(appProvider, context),
+                            if (appProvider.selectedDriver != null &&
+                                appProvider.selectedVehicle == null)
+                              ..._buildVehicleSelection(appProvider, context),
+                          ],
                         ),
-                      ],
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-              );
-            },
-          );
-        },
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

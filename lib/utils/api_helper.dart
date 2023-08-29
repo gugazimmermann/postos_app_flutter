@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 import '../models/driver.dart';
 import '../models/vehicle.dart';
-import '../widgets/custom_snackbar_error.dart';
+import '../widgets/custom_flushbar_error.dart';
 
 class ApiResponse<T> {
   final T? data;
@@ -52,13 +52,13 @@ class ApiHelper {
   static void handleApiError(Exception? error, BuildContext context) {
     if (error == null) return;
     if (error is SocketException) {
-      customSnackBarError(ApiConstants.errorNetwork, context);
+      customFlushBarError(ApiConstants.errorNetwork, context);
     } else if (error.toString().contains(ApiConstants.errorDocument)) {
-      customSnackBarError(ApiConstants.errorDocument, context);
+      customFlushBarError(ApiConstants.errorDocument, context);
     } else if (error.toString().contains(ApiConstants.errorVehicle)) {
-      customSnackBarError(ApiConstants.errorVehicle, context);
+      customFlushBarError(ApiConstants.errorVehicle, context);
     } else {
-      customSnackBarError(ApiConstants.errorApi, context);
+      customFlushBarError(ApiConstants.errorApi, context);
     }
   }
 }

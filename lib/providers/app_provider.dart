@@ -9,7 +9,7 @@ import '../utils/api_helper.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/is_valid_cpf.dart';
 
-class HomeProvider with ChangeNotifier {
+class AppProvider with ChangeNotifier {
   final cpfController = MaskedTextController(mask: '000.000.000-00');
 
   List<DriverModel>? _driverList;
@@ -27,7 +27,7 @@ class HomeProvider with ChangeNotifier {
 
   final errorNotifier = ValueNotifier<String?>(null);
 
-  HomeProvider() {
+  AppProvider() {
     _loadInitialData();
   }
 
@@ -129,14 +129,18 @@ class HomeProvider with ChangeNotifier {
     }
   }
 
-  void selectDriver(DriverModel driver) {
+  Future<void> selectDriver(DriverModel driver) async {
     _selectedDriver = driver;
+    await PreferencesHelper.saveData(
+        PreferencesHelper.driverDataKey, _selectedDriver);
     notifyListeners();
     fetchVehicles();
   }
 
-  void selectVehicle(VehicleModel vehicle) {
+  Future<void> selectVehicle(VehicleModel vehicle) async {
     _selectedVehicle = vehicle;
+    await PreferencesHelper.saveData(
+        PreferencesHelper.vehicleDataKey, _selectedVehicle);
     notifyListeners();
   }
 }
