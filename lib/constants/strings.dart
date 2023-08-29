@@ -9,3 +9,8 @@ abstract class HomeStrings {
   static const buttonSend = 'Enviar';
   static const labelBack = 'Voltar';
 }
+
+abstract class DriverHomeStrings {
+  static const tabLabelGasStations = 'Postos';
+  static const tabLabelSchedules = 'Agendamentos';
+}
