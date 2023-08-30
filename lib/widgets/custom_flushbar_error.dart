@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:another_flushbar/flushbar.dart';
+
 import '../constants/colors.dart';
 
 void customFlushBarError(String message, BuildContext context) {

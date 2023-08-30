@@ -2,9 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+
+import '../constants/strings.dart';
 import '../constants/constants.dart';
+
 import '../models/driver.dart';
 import '../models/vehicle.dart';
+
 import '../widgets/custom_flushbar_error.dart';
 
 class ApiResponse<T> {
@@ -26,7 +30,7 @@ class ApiHelper {
             .toList();
         return ApiResponse(data: drivers);
       }
-      return ApiResponse(error: Exception(ApiConstants.errorDocument));
+      return ApiResponse(error: Exception(SignInStrings.errorDocument));
     } catch (e) {
       return ApiResponse(error: Exception(e.toString()));
     }
@@ -43,7 +47,7 @@ class ApiHelper {
             .toList();
         return ApiResponse(data: vehicles);
       }
-      return ApiResponse(error: Exception(ApiConstants.errorVehicle));
+      return ApiResponse(error: Exception(SignInStrings.errorVehicle));
     } catch (e) {
       return ApiResponse(error: Exception(e.toString()));
     }
@@ -53,10 +57,10 @@ class ApiHelper {
     if (error == null) return;
     if (error is SocketException) {
       customFlushBarError(ApiConstants.errorNetwork, context);
-    } else if (error.toString().contains(ApiConstants.errorDocument)) {
-      customFlushBarError(ApiConstants.errorDocument, context);
-    } else if (error.toString().contains(ApiConstants.errorVehicle)) {
-      customFlushBarError(ApiConstants.errorVehicle, context);
+    } else if (error.toString().contains(SignInStrings.errorDocument)) {
+      customFlushBarError(SignInStrings.errorDocument, context);
+    } else if (error.toString().contains(SignInStrings.errorVehicle)) {
+      customFlushBarError(SignInStrings.errorVehicle, context);
     } else {
       customFlushBarError(ApiConstants.errorApi, context);
     }

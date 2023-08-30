@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../constants/constants.dart';
+
+import '../../constants/strings.dart';
+import '../../constants/colors.dart';
 
 class WelcomeContainer extends StatelessWidget {
-  final Color textColor;
-
-  const WelcomeContainer({super.key, required this.textColor});
+  const WelcomeContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,19 @@ class WelcomeContainer extends StatelessWidget {
           children: [
             Image.asset('assets/logos/logo144.png'),
             const SizedBox(height: 12),
-            Text(
-              AppConstants.welcome,
+            const Text(
+              SignInStrings.welcome,
               style: TextStyle(
                 fontSize: 24,
-                color: textColor,
+                color: ColorsConstants.textColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              AppConstants.title,
+            const Text(
+              AppStrings.title,
               style: TextStyle(
                 fontSize: 28,
-                color: textColor,
+                color: ColorsConstants.textColor,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AgendamentosTab extends StatelessWidget {
-  const AgendamentosTab({super.key});
+class SchedulesTab extends StatelessWidget {
+  const SchedulesTab({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
-import '../constants/constants.dart';
+import '../constants/strings.dart';
+
 import '../models/driver.dart';
 import '../models/vehicle.dart';
+
 import '../utils/log.dart';
 import '../utils/api_helper.dart';
 import '../utils/shared_preferences.dart';
@@ -93,7 +95,7 @@ class AppProvider with ChangeNotifier {
 
   Future<void> fetchDriver() async {
     if (!isValidCPF(cpfController.text)) {
-      errorNotifier.value = ApiConstants.errorDocumentNull;
+      errorNotifier.value = SignInStrings.errorDocumentNull;
       return;
     }
     _isLoading = true;

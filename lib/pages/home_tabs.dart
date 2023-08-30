@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:postos_flutter_app/constants/colors.dart';
-import 'package:postos_flutter_app/constants/strings.dart';
-import 'postos_tab.dart';
-import 'agendamentos_tab.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../constants/colors.dart';
+import '../constants/strings.dart';
+import 'gas_stations_tab.dart';
+import 'schedules_tab.dart';
 
-class DriverHome extends StatefulWidget {
-  const DriverHome({super.key});
+class HomeTabs extends StatefulWidget {
+  const HomeTabs({super.key});
 
   @override
-  DriverHomeState createState() => DriverHomeState();
+  HomeTabsState createState() => HomeTabsState();
 }
 
-class DriverHomeState extends State<DriverHome>
+class HomeTabsState extends State<HomeTabs>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -35,13 +36,13 @@ class DriverHomeState extends State<DriverHome>
             children: [
               _buildTab(
                 index: 0,
-                icon: Icons.local_gas_station,
-                label: DriverHomeStrings.tabLabelGasStations,
+                icon: MdiIcons.gasStation,
+                label: HomeTabsStrings.tabGasStations,
               ),
               _buildTab(
                 index: 1,
-                icon: Icons.schedule,
-                label: DriverHomeStrings.tabLabelSchedules,
+                icon: MdiIcons.carClock,
+                label: HomeTabsStrings.tabSchedules,
               ),
             ],
           ),
@@ -49,8 +50,8 @@ class DriverHomeState extends State<DriverHome>
             child: TabBarView(
               controller: _tabController,
               children: const [
-                PostosTab(),
-                AgendamentosTab(),
+                GasStationsTab(),
+                SchedulesTab(),
               ],
             ),
           ),
@@ -105,9 +106,9 @@ class DriverHomeState extends State<DriverHome>
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 4.0,
+                  height: 6.0,
                   color: isActive
-                      ? ColorsConstants.activeTabBorder
+                      ? ColorsConstants.activeTabIndicator
                       : Colors.transparent,
                 ),
               ),

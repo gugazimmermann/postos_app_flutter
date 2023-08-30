@@ -13,10 +13,11 @@ import '../widgets/forms/custom_dropdown.dart';
 import '../widgets/home/welcome_container.dart';
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/custom_button.dart';
-import 'driver_home.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+import 'home_tabs.dart';
+
+class SignIn extends StatelessWidget {
+  const SignIn({super.key});
 
   List<Widget> _buildDriverDocument(
       AppProvider appProvider, BuildContext context) {
@@ -27,9 +28,9 @@ class HomePage extends StatelessWidget {
         textColor: ColorsConstants.textColor,
       ),
       CustomButton(
-        label: HomeStrings.buttonSend,
+        label: GeneralStrings.buttonSend,
         onPressed: () => _handleFetchDriver(context, appProvider),
-        textColor: ColorsConstants.backgroundColor,
+        textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,
       ),
     ];
@@ -55,16 +56,16 @@ class HomePage extends StatelessWidget {
     return await showDialog<bool>(
       context: navigator.context,
       builder: (BuildContext dialogContext) => AlertDialog(
-        title: const Text(HomeStrings.dialogDriverTitle),
+        title: const Text(SignInStrings.dialogDriverTitle),
         content: Text(driverName),
         actions: [
           TextButton(
             onPressed: () => navigator.pop(false),
-            child: const Text(HomeStrings.dialogOptionNo),
+            child: const Text(GeneralStrings.optionNo),
           ),
           TextButton(
             onPressed: () => navigator.pop(true),
-            child: const Text(HomeStrings.dialogOptionYes),
+            child: const Text(GeneralStrings.optionYes),
           ),
         ],
       ),
@@ -76,16 +77,16 @@ class HomePage extends StatelessWidget {
     return [
       CustomDropdown<DriverModel>(
         items: appProvider.driverList,
-        hint: HomeStrings.inputHintCompany,
+        hint: SignInStrings.inputHintCompany,
         onChanged: (value) {
           if (value != null) appProvider.selectDriver(value);
         },
         itemText: (item) => item.company.name,
       ),
       CustomButton(
-        label: HomeStrings.labelBack,
+        label: GeneralStrings.buttonBack,
         onPressed: appProvider.resetSelection,
-        textColor: ColorsConstants.backgroundColor,
+        textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,
       ),
     ];
@@ -96,7 +97,7 @@ class HomePage extends StatelessWidget {
     return [
       CustomDropdown<VehicleModel>(
         items: appProvider.vehiclesList,
-        hint: HomeStrings.inputHintVehicle,
+        hint: SignInStrings.inputHintVehicle,
         onChanged: (value) {
           if (value != null) appProvider.selectVehicle(value);
         },
@@ -104,9 +105,9 @@ class HomePage extends StatelessWidget {
             '${item.plate} - ${item.manufacturer} / ${item.model}',
       ),
       CustomButton(
-        label: HomeStrings.labelBack,
+        label: GeneralStrings.buttonSend,
         onPressed: appProvider.resetSelection,
-        textColor: ColorsConstants.backgroundColor,
+        textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,
       ),
     ];
@@ -120,7 +121,7 @@ class HomePage extends StatelessWidget {
           Future.delayed(Duration.zero, () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const DriverHome()),
+              MaterialPageRoute(builder: (context) => const HomeTabs()),
             );
           });
         }
@@ -136,7 +137,7 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Stack(
                   children: [
-                    WelcomeContainer(textColor: ColorsConstants.textColor),
+                    const WelcomeContainer(),
                     if (appProvider.isLoading)
                       const Center(child: CircularProgressIndicator()),
                     if (!appProvider.isLoading)

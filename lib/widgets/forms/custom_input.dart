@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 
 class CustomInput extends StatelessWidget {
@@ -19,7 +21,7 @@ class CustomInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          HomeStrings.labelDocument,
+          SignInStrings.labelDocument,
           style: TextStyle(
             fontSize: 21,
             color: textColor,
@@ -32,8 +34,15 @@ class CustomInput extends StatelessWidget {
           decoration: const InputDecoration(
             contentPadding:
                 EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-            labelText: HomeStrings.placeholderDocument,
-            border: OutlineInputBorder(),
+            labelText: SignInStrings.placeholderDocument,
+            border: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: ColorsConstants.primaryColor, width: 2.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: ColorsConstants.primaryColor, width: 2.0),
+            ),
           ),
         ),
       ],

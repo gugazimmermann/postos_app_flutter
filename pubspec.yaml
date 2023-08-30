@@ -40,6 +40,7 @@ dependencies:
   another_flushbar: ^1.12.30
   logger: ^2.0.1
   provider: ^6.0.5
+  material_design_icons_flutter: ^7.0.7296
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logos/logo36.png
+    - assets/logos/logo36_inverted.png
     - assets/logos/logo144.png
     - assets/icon.png
 

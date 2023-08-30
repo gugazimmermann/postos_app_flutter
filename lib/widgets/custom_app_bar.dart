@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:postos_flutter_app/constants/colors.dart';
 import 'package:provider/provider.dart';
-import '../constants/constants.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../constants/strings.dart';
+
 import '../providers/app_provider.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor;
   final bool isUserConnected;
 
   const CustomAppBar({
     super.key,
-    required this.backgroundColor,
     this.isUserConnected = false,
   });
 
@@ -49,17 +51,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 40.0,
           ),
           const SizedBox(width: 12),
-          const Text(AppConstants.title),
+          const Text(AppStrings.title,
+              style: TextStyle(fontSize: 21, color: ColorsConstants.textColor)),
         ],
       ),
       actions: [
         if (isUserConnected)
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () => _showLogoutDialog(context),
+          Padding(
+            padding: const EdgeInsets.only(
+                right: 16.0), // Add desired right margin here
+            child: IconButton(
+              icon: Icon(
+                MdiIcons.cardAccountDetailsOutline,
+                size: 36.0,
+                color: ColorsConstants.textColor,
+              ),
+              onPressed: () => _showLogoutDialog(context),
+            ),
           ),
       ],
-      backgroundColor: backgroundColor,
+      backgroundColor: ColorsConstants.white,
     );
   }
 

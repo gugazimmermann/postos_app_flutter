@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'pages/driver_home.dart';
+
 import 'providers/app_provider.dart';
+
+import 'constants/strings.dart';
 import 'constants/colors.dart';
-import 'constants/constants.dart';
+
 import 'widgets/custom_app_bar.dart';
-import 'pages/home.dart';
+
+import 'pages/sign_in.dart';
+import 'pages/home_tabs.dart';
 
 void main() => runApp(const MyApp());
 
@@ -17,27 +22,29 @@ class MyApp extends StatelessWidget {
         appProvider.driverList != null &&
         appProvider.selectedVehicle != null &&
         appProvider.vehiclesList != null) {
-      return const DriverHome();
+      return const HomeTabs();
     } else {
-      return const HomePage();
+      return const SignIn();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: ColorsConstants.primaryColor,
+    ));
+
     return ChangeNotifierProvider(
       create: (context) => AppProvider(),
       child: Consumer<AppProvider>(builder: (context, appProvider, child) {
         return MaterialApp(
-          title: AppConstants.title,
+          title: AppStrings.title,
           theme: ThemeData(
             primarySwatch: ColorsConstants.primarySwatch,
-            primaryColor: ColorsConstants.primaryColor,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: Scaffold(
             appBar: CustomAppBar(
-              backgroundColor: ColorsConstants.primaryColor,
               isUserConnected: appProvider.selectedDriver != null &&
                   appProvider.driverList != null &&
                   appProvider.selectedVehicle != null &&

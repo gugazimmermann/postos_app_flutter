@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PostosTab extends StatelessWidget {
-  const PostosTab({super.key});
+class GasStationsTab extends StatelessWidget {
+  const GasStationsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
