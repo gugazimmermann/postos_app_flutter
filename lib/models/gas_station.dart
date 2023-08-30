@@ -16,6 +16,7 @@ class GasSstationModel {
   final List<SignatureModel> signatures;
   final GasSstationVehicleModel vehicle;
   final GasSstationDriverModel driver;
+  double? distance;
 
   GasSstationModel({
     required this.id,
@@ -31,7 +32,11 @@ class GasSstationModel {
     required this.signatures,
     required this.vehicle,
     required this.driver,
+    this.distance,
   });
+
+  double get latitudeAsDouble => double.parse(latitude);
+  double get longitudeAsDouble => double.parse(longitude);
 
   factory GasSstationModel.fromJson(Map<String, dynamic> json) {
     List<SignatureModel> signaturesList = (json['signatures'] as List)

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:postos_flutter_app/constants/constants.dart';
 
 import '../constants/strings.dart';
 
@@ -13,6 +15,12 @@ import '../utils/shared_preferences.dart';
 import '../utils/is_valid_cpf.dart';
 
 class AppProvider with ChangeNotifier {
+  Location location = Location();
+  bool? _serviceEnabled;
+  PermissionStatus? _permissionGranted;
+  LocationData? _locationData;
+  String? _locationError;
+
   final cpfController = MaskedTextController(mask: '000.000.000-00');
 
   List<DriverModel>? _driverList;
@@ -27,14 +35,55 @@ class AppProvider with ChangeNotifier {
   VehicleModel? get selectedVehicle => _selectedVehicle;
   List<GasSstationModel>? get gasStations => _gasStations;
 
+  bool _isLoadingLocation = true;
+  bool get isLoadingLocation => _isLoadingLocation;
+
   bool _isLoading = true;
   bool get isLoading => _isLoading;
 
   final errorNotifier = ValueNotifier<String?>(null);
 
   AppProvider() {
+    _initLocation();
     _loadInitialData();
   }
+
+  Future<void> _initLocation() async {
+    _isLoadingLocation = true;
+    notifyListeners();
+    try {
+      _serviceEnabled = await location.serviceEnabled();
+      if (_serviceEnabled != true) {
+        _serviceEnabled = await location.requestService();
+        if (_serviceEnabled != true) {
+          _locationError = LocationConstants.disabled;
+          _isLoadingLocation = false;
+          notifyListeners();
+          return;
+        }
+      }
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted == null ||
+            _permissionGranted != PermissionStatus.granted) {
+          _locationError = LocationConstants.permissionDenied;
+          _isLoadingLocation = false;
+          notifyListeners();
+          return;
+        }
+      }
+      _locationData = await location.getLocation();
+      logger.d('location: $_locationData');
+    } catch (error) {
+      _locationError = "${LocationConstants.error}: $error";
+    }
+    _isLoadingLocation = false;
+    notifyListeners();
+  }
+
+  LocationData? get currentLocation => _locationData;
+  String? get locationError => _locationError;
 
   Future<void> _loadInitialData() async {
     _isLoading = true;
@@ -53,26 +102,26 @@ class AppProvider with ChangeNotifier {
       _driverList = (savedDriverList as List)
           .map((driver) => DriverModel.fromJson(driver))
           .toList();
-      logger.d(
+      logger.t(
           'Driver List: ${_driverList?.map((driver) => driver.toJson()).toList()}');
     }
 
     if (savedDriverData != null) {
       _selectedDriver = DriverModel.fromJson(savedDriverData);
-      logger.d('Driver: ${_selectedDriver?.toJson()}');
+      logger.t('Driver: ${_selectedDriver?.toJson()}');
     }
 
     if (savedVehiclesList != null) {
       _vehiclesList = (savedVehiclesList as List)
           .map((vehicle) => VehicleModel.fromJson(vehicle))
           .toList();
-      logger.d(
+      logger.t(
           'Vehicle List: ${_vehiclesList?.map((vehicle) => vehicle.toJson()).toList()}');
     }
 
     if (savedVehicleData != null) {
       _selectedVehicle = VehicleModel.fromJson(savedVehicleData);
-      logger.d('Vehicle: ${_selectedVehicle?.toJson()}');
+      logger.t('Vehicle: ${_selectedVehicle?.toJson()}');
     }
 
     _isLoading = false;
