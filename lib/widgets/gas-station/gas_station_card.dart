@@ -18,7 +18,9 @@ class GasStationCard extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          // abrir detalhes do posto
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Informações do posto em breve!')),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),

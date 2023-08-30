@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:postos_flutter_app/constants/constants.dart';
-import 'package:postos_flutter_app/utils/log.dart';
 import 'package:provider/provider.dart';
 
 import '../models/gas_station.dart';
@@ -14,6 +14,7 @@ import '../utils/haversine.dart';
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/gas-station/gas_station_card.dart';
 
+import 'gas_stations_map.dart';
 import 'gas_stations_route.dart';
 
 class GasStationsTab extends StatefulWidget {
@@ -82,20 +83,32 @@ class GasStationsTabState extends State<GasStationsTab>
           if (appProvider.isLoadingLocation == false &&
               locationError == null &&
               userLocation != null)
-            mapButton(),
+            mapButton(userLocation, gasStations),
         ],
       ),
     );
   }
 
-  Align mapButton() {
+  Align mapButton(
+      LocationData? userLocation, List<GasSstationModel>? gasStations) {
+    if (userLocation == null) {
+      return const Align();
+    }
+    LatLng userLatLng = LatLng(userLocation.latitude!, userLocation.longitude!);
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FloatingActionButton(
           onPressed: () {
-            // abrir map
+            if (gasStations != null) {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => GasStationsMap(
+                  userLocation: userLatLng,
+                  gasStations: gasStations,
+                ),
+              ));
+            }
           },
           child: Icon(MdiIcons.mapSearch,
               size: 38.0, color: ColorsConstants.white),

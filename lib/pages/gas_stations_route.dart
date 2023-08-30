@@ -160,7 +160,9 @@ class GasStationsRouteState extends State<GasStationsRoute> {
   SpeedDialChild gasStationInfo() {
     return SpeedDialChild(
         onTap: () {
-          // gas station info
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Informações do posto em breve!')),
+          );
         },
         backgroundColor: ColorsConstants.mapGasStation,
         child: Icon(

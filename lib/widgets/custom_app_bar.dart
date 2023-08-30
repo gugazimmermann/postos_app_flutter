@@ -58,8 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         if (isUserConnected)
           Padding(
-            padding: const EdgeInsets.only(
-                right: 16.0), // Add desired right margin here
+            padding: const EdgeInsets.only(right: 16.0),
             child: IconButton(
               icon: Icon(
                 MdiIcons.cardAccountDetailsOutline,
