@@ -1,6 +1,6 @@
 class SignatureModel {
   final String type;
-  final String active;
+  final bool active;
 
   SignatureModel({
     required this.type,
@@ -10,7 +10,7 @@ class SignatureModel {
   factory SignatureModel.fromJson(Map<String, dynamic> json) {
     return SignatureModel(
       type: json['type'],
-      active: json['active'],
+      active: json['active'] is bool ? json['active'] : false,
     );
   }
 

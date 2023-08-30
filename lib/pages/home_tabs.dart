@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/app_provider.dart';
+
 import '../constants/colors.dart';
 import '../constants/strings.dart';
+
 import 'gas_stations_tab.dart';
 import 'schedules_tab.dart';
 
@@ -25,6 +30,8 @@ class HomeTabsState extends State<HomeTabs>
         setState(() {});
       }
     });
+
+    Provider.of<AppProvider>(context, listen: false).fetchGasStationsData();
   }
 
   @override

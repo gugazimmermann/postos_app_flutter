@@ -2,23 +2,29 @@ import 'fuel_type.dart';
 import 'transaction.dart';
 
 class GasSstationVehicleModel {
-  final FuelTypeModel fuelTypes;
-  final TransactionModel transactions;
+  final List<FuelTypeModel> fuelTypes;
+  final List<TransactionModel> transactions;
 
   GasSstationVehicleModel(
       {required this.fuelTypes, required this.transactions});
 
-  factory GasSstationVehicleModel.fromJson(Map<String, dynamic> json) {
+  factory GasSstationVehicleModel.fromJson(Map<dynamic, dynamic> json) {
+    List<FuelTypeModel> fuelTypesList = (json['fuelTypes'] as List)
+        .map((item) => FuelTypeModel.fromJson(item))
+        .toList();
+    List<TransactionModel> transactionsList = (json['transactions'] as List)
+        .map((item) => TransactionModel.fromJson(item))
+        .toList();
     return GasSstationVehicleModel(
-      fuelTypes: FuelTypeModel.fromJson(json['fuelTypes']),
-      transactions: TransactionModel.fromJson(json['transactions']),
+      fuelTypes: fuelTypesList,
+      transactions: transactionsList,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'fuelTypes': fuelTypes.toJson(),
-      'transactions': transactions.toJson(),
+      'fuelTypes': fuelTypes.map((item) => item.toJson()).toList(),
+      'transactions': transactions.map((item) => item.toJson()).toList(),
     };
   }
 }

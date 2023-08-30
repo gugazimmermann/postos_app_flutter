@@ -7,7 +7,7 @@ class TransactionModel {
   final String unitValue;
   final String totalValue;
   final String fuelType;
-  final TransactionProductModel products;
+  final List<TransactionProductModel> products;
 
   TransactionModel({
     required this.createdAt,
@@ -20,6 +20,9 @@ class TransactionModel {
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    List<TransactionProductModel> productsList = (json['products'] as List)
+        .map((item) => TransactionProductModel.fromJson(item))
+        .toList();
     return TransactionModel(
       createdAt: json['createdAt'],
       km: json['km'],
@@ -27,7 +30,7 @@ class TransactionModel {
       unitValue: json['unitValue'],
       totalValue: json['totalValue'],
       fuelType: json['fuelType'],
-      products: TransactionProductModel.fromJson(json['products']),
+      products: productsList,
     );
   }
 
@@ -39,7 +42,7 @@ class TransactionModel {
       'unitValue': unitValue,
       'totalValue': totalValue,
       'fuelType': fuelType,
-      'products': products.toJson(),
+      'products': products.map((item) => item.toJson()).toList(),
     };
   }
 }

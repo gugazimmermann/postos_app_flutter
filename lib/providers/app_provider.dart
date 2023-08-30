@@ -5,6 +5,7 @@ import '../constants/strings.dart';
 
 import '../models/driver.dart';
 import '../models/vehicle.dart';
+import '../models/gas_station.dart';
 
 import '../utils/log.dart';
 import '../utils/api_helper.dart';
@@ -18,14 +19,16 @@ class AppProvider with ChangeNotifier {
   DriverModel? _selectedDriver;
   List<VehicleModel>? _vehiclesList;
   VehicleModel? _selectedVehicle;
-
-  bool _isLoading = true;
-  bool get isLoading => _isLoading;
+  List<GasSstationModel>? _gasStations;
 
   List<DriverModel>? get driverList => _driverList;
   DriverModel? get selectedDriver => _selectedDriver;
   List<VehicleModel>? get vehiclesList => _vehiclesList;
   VehicleModel? get selectedVehicle => _selectedVehicle;
+  List<GasSstationModel>? get gasStations => _gasStations;
+
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
 
   final errorNotifier = ValueNotifier<String?>(null);
 
@@ -144,5 +147,18 @@ class AppProvider with ChangeNotifier {
     await PreferencesHelper.saveData(
         PreferencesHelper.vehicleDataKey, _selectedVehicle);
     notifyListeners();
+  }
+
+  Future<void> fetchGasStationsData() async {
+    if (selectedVehicle != null && selectedDriver != null) {
+      var response = await ApiHelper.fetchGasStationsData(
+          selectedDriver!.company.id, selectedVehicle!.id, selectedDriver!.id);
+      if (response.data != null) {
+        _gasStations = response.data!;
+        notifyListeners();
+      } else {
+        errorNotifier.value = response.error?.toString();
+      }
+    }
   }
 }

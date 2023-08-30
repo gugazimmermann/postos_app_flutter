@@ -7,7 +7,7 @@ class FuelTypeModel {
 
   factory FuelTypeModel.fromJson(Map<String, dynamic> json) {
     return FuelTypeModel(
-      name: json['plnameate'],
+      name: json['name'],
     );
   }
 

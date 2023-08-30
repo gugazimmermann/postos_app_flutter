@@ -8,6 +8,7 @@ import '../constants/constants.dart';
 
 import '../models/driver.dart';
 import '../models/vehicle.dart';
+import '../models/gas_station.dart';
 
 import '../widgets/custom_flushbar_error.dart';
 
@@ -48,6 +49,24 @@ class ApiHelper {
         return ApiResponse(data: vehicles);
       }
       return ApiResponse(error: Exception(SignInStrings.errorVehicle));
+    } catch (e) {
+      return ApiResponse(error: Exception(e.toString()));
+    }
+  }
+
+  static Future<ApiResponse<List<GasSstationModel>>> fetchGasStationsData(
+      String companyId, String vehicleId, String driverId) async {
+    try {
+      var response = await http.get(Uri.parse(
+          '${ApiConstants.baseUrl}/gas-stations/$companyId/$vehicleId/$driverId'));
+      if (response.statusCode == 200) {
+        List<GasSstationModel> gasSstations =
+            (json.decode(response.body) as List)
+                .map((data) => GasSstationModel.fromJson(data))
+                .toList();
+        return ApiResponse(data: gasSstations);
+      }
+      return ApiResponse(error: Exception(GasStationStrings.errorGasStations));
     } catch (e) {
       return ApiResponse(error: Exception(e.toString()));
     }

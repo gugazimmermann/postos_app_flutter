@@ -1,7 +1,7 @@
 class TransactionProductModel {
   final String category;
   final String name;
-  final String quantity;
+  final int quantity;
   final String price;
   final String totalValue;
 

@@ -1,7 +1,7 @@
 class ProductModel {
   final String category;
   final String name;
-  final String active;
+  final bool active;
 
   ProductModel({
     required this.category,
@@ -13,7 +13,7 @@ class ProductModel {
     return ProductModel(
       category: json['category'],
       name: json['name'],
-      active: json['active'],
+      active: json['active'] is bool ? json['active'] : false,
     );
   }
 

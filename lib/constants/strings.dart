@@ -26,3 +26,7 @@ abstract class HomeTabsStrings {
   static const tabGasStations = 'Postos';
   static const tabSchedules = 'Agendamentos';
 }
+
+abstract class GasStationStrings {
+  static const String errorGasStations = 'Erro ao buscar postos.';
+}
