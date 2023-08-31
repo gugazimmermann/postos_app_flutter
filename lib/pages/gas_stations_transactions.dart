@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../constants/colors.dart';
 import '../constants/constants.dart';
+import '../constants/strings.dart';
 import '../models/gas_station.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_page_app_bar.dart';
@@ -22,7 +23,8 @@ class GasStationTransactions extends StatelessWidget {
         DateTime.parse(b.createdAt).compareTo(DateTime.parse(a.createdAt)));
 
     return Scaffold(
-      appBar: CustomPageAppBar(title: 'Abastecimentos em ${gasStation.name}'),
+      appBar: CustomPageAppBar(
+          title: '${GasStationStrings.transactionsIn} ${gasStation.name}'),
       body: Padding(
         padding: Lists.edgeInsets,
         child: ListView.builder(

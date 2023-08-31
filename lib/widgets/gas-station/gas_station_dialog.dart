@@ -4,6 +4,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/constants.dart';
+import '../../constants/strings.dart';
 import '../../models/gas_station.dart';
 
 import '../../pages/gas_stations_products.dart';
@@ -111,7 +113,7 @@ class GasStationDialog extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'Combustíveis Autorizados',
+          GasStationStrings.fuelTypes,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
@@ -127,7 +129,7 @@ class GasStationDialog extends StatelessWidget {
     final fuelTypes = gasStation.vehicle.fuelTypes;
     if (fuelTypes.isEmpty) {
       return const Text(
-        'Veículo sem Restrições',
+        GasStationStrings.fuelTypesAll,
         style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
       );
     } else {
@@ -146,7 +148,7 @@ class GasStationDialog extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'Produtos',
+          GasStationStrings.products,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
@@ -164,7 +166,7 @@ class GasStationDialog extends StatelessWidget {
     Widget productsText;
     if (!hasProducts) {
       productsText = const Text(
-        'Nenhum Produto Autorizado',
+        GasStationStrings.productsZero,
         style: TextStyle(
           fontSize: 16.0,
           color: ColorsConstants.textColor,
@@ -173,8 +175,8 @@ class GasStationDialog extends StatelessWidget {
     } else {
       productsText = Text(
         hasProducts
-            ? '$productCount Produtos Autorizados'
-            : '1 Produto Autorizado',
+            ? '$productCount ${GasStationStrings.productsPlural}'
+            : '1 ${GasStationStrings.productsSingular}',
         style:
             const TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
       );
@@ -198,7 +200,7 @@ class GasStationDialog extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'Assinaturas',
+          GasStationStrings.signatures,
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
@@ -236,13 +238,13 @@ class GasStationDialog extends StatelessWidget {
 
   IconData _getSignatureIcon(String signatureType) {
     switch (signatureType) {
-      case 'Biometric':
+      case SignaturesConstants.biometric:
         return MdiIcons.fingerprint;
-      case 'Facial Recognition':
+      case SignaturesConstants.facialRecognition:
         return MdiIcons.faceRecognition;
-      case 'Digital Signature':
+      case SignaturesConstants.digitalSignature:
         return MdiIcons.drawPen;
-      case 'Code':
+      case SignaturesConstants.code:
         return MdiIcons.numeric;
       default:
         return Icons.error;
@@ -255,7 +257,7 @@ class GasStationDialog extends StatelessWidget {
     Widget transactionsText;
     if (!hasTransactions) {
       transactionsText = const Text(
-        'Nenhum Abastecimento Realizado',
+        GasStationStrings.transactionsZero,
         style: TextStyle(
           fontSize: 16.0,
           color: ColorsConstants.textColor,
@@ -267,8 +269,8 @@ class GasStationDialog extends StatelessWidget {
         children: [
           Text(
             hasTransactions
-                ? '$transactionsCount Abastecimentos Realizados'
-                : '1 Abastecimento Realizado',
+                ? '$transactionsCount ${GasStationStrings.transactionsPlural}'
+                : '1 ${GasStationStrings.transactionsSingular}',
             style: const TextStyle(
                 fontSize: 16.0, color: ColorsConstants.textColor),
           ),
@@ -319,7 +321,7 @@ class GasStationDialog extends StatelessWidget {
           Navigator.pop(context);
         },
         child: const Text(
-          'Fechar',
+          GeneralStrings.buttonClose,
           style: TextStyle(color: ColorsConstants.textColor),
         ),
       ),

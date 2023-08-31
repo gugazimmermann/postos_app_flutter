@@ -10,7 +10,7 @@ abstract class ApiConstants {
 }
 
 abstract class LocationConstants {
-  static const String disabled = '"O serviço de localização está desativado."';
+  static const String disabled = 'O serviço de localização está desativado.';
   static const String permissionDenied = 'Permissão de localização negada.';
   static const String error = ' Ocorreu um erro ao obter a localização';
 }
@@ -23,4 +23,11 @@ abstract class Lists {
   static RoundedRectangleBorder shape =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0));
   static const EdgeInsets padding = EdgeInsets.all(12.0);
+}
+
+abstract class SignaturesConstants {
+  static const String biometric = 'Biometric';
+  static const String facialRecognition = 'Facial Recognition';
+  static const String digitalSignature = 'Digital Signature';
+  static const String code = 'Code';
 }

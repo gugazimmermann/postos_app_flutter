@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../constants/colors.dart';
+import '../constants/strings.dart';
 import '../models/gas_station.dart';
 import '../widgets/custom_page_app_bar.dart';
 import '../widgets/gas-station/gas_station_dialog.dart';
@@ -34,7 +35,7 @@ class GasStationsMapState extends State<GasStationsMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomPageAppBar(title: "Mapa dos Postos"),
+      appBar: const CustomPageAppBar(title: GasStationStrings.gasStationsMap),
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
