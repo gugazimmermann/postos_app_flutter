@@ -140,7 +140,7 @@ class ScheduleDialog extends StatelessWidget {
         schedule.scheduleServiceOptions.map((option) => option.name).join(', ');
     return Text(
       services,
-      style: const TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
+      style: const TextStyle(fontSize: 18.0, color: ColorsConstants.textColor),
     );
   }
 
@@ -153,7 +153,7 @@ class ScheduleDialog extends StatelessWidget {
         },
         child: const Text(
           GeneralStrings.buttonClose,
-          style: TextStyle(color: ColorsConstants.textColor),
+          style: TextStyle(fontSize: 18.0, color: ColorsConstants.textColor),
         ),
       ),
     );

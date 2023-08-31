@@ -322,7 +322,7 @@ class GasStationDialog extends StatelessWidget {
         },
         child: const Text(
           GeneralStrings.buttonClose,
-          style: TextStyle(color: ColorsConstants.textColor),
+          style: TextStyle(fontSize: 18.0, color: ColorsConstants.textColor),
         ),
       ),
     );
