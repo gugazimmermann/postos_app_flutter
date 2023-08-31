@@ -46,9 +46,9 @@ class GasStationsTabState extends State<GasStationsTab>
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
-    final userLocation = appProvider.currentLocation;
-    final gasStations = appProvider.gasStations;
-    final locationError = appProvider.locationError;
+    final userLocation = appProvider.locationProvider.currentLocation;
+    final gasStations = appProvider.gasStationProvider.gasStations;
+    final locationError = appProvider.locationProvider.locationError;
 
     if (userLocation != null && gasStations != null) {
       for (var station in gasStations) {
@@ -77,10 +77,11 @@ class GasStationsTabState extends State<GasStationsTab>
                       userLocation: userLocation));
             },
           ),
-          if (appProvider.isLoadingLocation) loadingLocation(),
-          if (appProvider.isLoadingLocation == false && locationError != null)
+          if (appProvider.locationProvider.isLoadingLocation) loadingLocation(),
+          if (appProvider.locationProvider.isLoadingLocation == false &&
+              locationError != null)
             errorLocation(context),
-          if (appProvider.isLoadingLocation == false &&
+          if (appProvider.locationProvider.isLoadingLocation == false &&
               locationError == null &&
               userLocation != null)
             mapButton(userLocation, gasStations),
@@ -151,12 +152,12 @@ class GasStationsTabState extends State<GasStationsTab>
       children: [
         SlidableAction(
           onPressed: (BuildContext context) {
-            if (appProvider.currentLocation != null) {
+            if (appProvider.locationProvider.currentLocation != null) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => GasStationsRoute(
                   userLocation: LatLng(
-                    appProvider.currentLocation!.latitude!,
-                    appProvider.currentLocation!.longitude!,
+                    appProvider.locationProvider.currentLocation!.latitude!,
+                    appProvider.locationProvider.currentLocation!.longitude!,
                   ),
                   gasStation: gasStation,
                 ),

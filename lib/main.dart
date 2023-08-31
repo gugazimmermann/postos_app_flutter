@@ -15,13 +15,13 @@ import 'pages/home_tabs.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   Widget _buildDestinationWidget(AppProvider appProvider) {
-    if (appProvider.selectedDriver != null &&
-        appProvider.driverList != null &&
-        appProvider.selectedVehicle != null &&
-        appProvider.vehiclesList != null) {
+    if (appProvider.signInProvider.selectedDriver != null &&
+        appProvider.signInProvider.driverList != null &&
+        appProvider.signInProvider.selectedVehicle != null &&
+        appProvider.signInProvider.vehiclesList != null) {
       return const HomeTabs();
     } else {
       return const SignIn();
@@ -45,10 +45,11 @@ class MyApp extends StatelessWidget {
           ),
           home: Scaffold(
             appBar: CustomAppBar(
-              isUserConnected: appProvider.selectedDriver != null &&
-                  appProvider.driverList != null &&
-                  appProvider.selectedVehicle != null &&
-                  appProvider.vehiclesList != null,
+              isUserConnected:
+                  appProvider.signInProvider.selectedDriver != null &&
+                      appProvider.signInProvider.driverList != null &&
+                      appProvider.signInProvider.selectedVehicle != null &&
+                      appProvider.signInProvider.vehiclesList != null,
             ),
             body: _buildDestinationWidget(appProvider),
           ),

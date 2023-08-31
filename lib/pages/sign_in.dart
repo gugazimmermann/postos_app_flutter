@@ -23,7 +23,7 @@ class SignIn extends StatelessWidget {
       AppProvider appProvider, BuildContext context) {
     return [
       CustomInput(
-        controller: appProvider.cpfController,
+        controller: appProvider.signInProvider.cpfController,
         keyboardType: TextInputType.number,
         textColor: ColorsConstants.textColor,
       ),
@@ -39,13 +39,15 @@ class SignIn extends StatelessWidget {
   Future<void> _handleFetchDriver(
       BuildContext context, AppProvider appProvider) async {
     var navigator = Navigator.of(context);
-    await appProvider.fetchDriver();
-    if (appProvider.driverList != null && appProvider.driverList!.isNotEmpty) {
+    await appProvider.signInProvider.fetchDriver();
+    if (appProvider.signInProvider.driverList != null &&
+        appProvider.signInProvider.driverList!.isNotEmpty) {
       final isConfirmed = await _confirmDriverDialog(
-          navigator, appProvider.driverList![0].name);
+          navigator, appProvider.signInProvider.driverList![0].name);
       if (isConfirmed == true) {
-        if (appProvider.driverList!.length == 1) {
-          appProvider.selectDriver(appProvider.driverList![0]);
+        if (appProvider.signInProvider.driverList!.length == 1) {
+          appProvider.signInProvider
+              .selectDriver(appProvider.signInProvider.driverList![0]);
         }
       }
     }
@@ -76,16 +78,16 @@ class SignIn extends StatelessWidget {
       AppProvider appProvider, BuildContext context) {
     return [
       CustomDropdown<DriverModel>(
-        items: appProvider.driverList,
+        items: appProvider.signInProvider.driverList,
         hint: SignInStrings.inputHintCompany,
         onChanged: (value) {
-          if (value != null) appProvider.selectDriver(value);
+          if (value != null) appProvider.signInProvider.selectDriver(value);
         },
         itemText: (item) => item.company.name,
       ),
       CustomButton(
         label: GeneralStrings.buttonBack,
-        onPressed: appProvider.resetSelection,
+        onPressed: appProvider.signInProvider.resetSelection,
         textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,
       ),
@@ -96,17 +98,17 @@ class SignIn extends StatelessWidget {
       AppProvider appProvider, BuildContext context) {
     return [
       CustomDropdown<VehicleModel>(
-        items: appProvider.vehiclesList,
+        items: appProvider.signInProvider.vehiclesList,
         hint: SignInStrings.inputHintVehicle,
         onChanged: (value) {
-          if (value != null) appProvider.selectVehicle(value);
+          if (value != null) appProvider.signInProvider.selectVehicle(value);
         },
         itemText: (item) =>
             '${item.plate} - ${item.manufacturer} / ${item.model}',
       ),
       CustomButton(
         label: GeneralStrings.buttonSend,
-        onPressed: appProvider.resetSelection,
+        onPressed: appProvider.signInProvider.resetSelection,
         textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,
       ),
@@ -117,7 +119,7 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (context, appProvider, child) {
-        if (appProvider.selectedVehicle != null) {
+        if (appProvider.signInProvider.selectedVehicle != null) {
           Future.delayed(Duration.zero, () {
             Navigator.pushReplacement(
               context,
@@ -126,11 +128,11 @@ class SignIn extends StatelessWidget {
           });
         }
         return ValueListenableBuilder<String?>(
-          valueListenable: appProvider.errorNotifier,
+          valueListenable: appProvider.signInProvider.errorNotifier,
           builder: (context, errorMessage, _) {
             if (errorMessage != null) {
               customFlushBarError(errorMessage, context);
-              appProvider.errorNotifier.value = null;
+              appProvider.signInProvider.errorNotifier.value = null;
             }
             return Scaffold(
               body: Padding(
@@ -138,22 +140,26 @@ class SignIn extends StatelessWidget {
                 child: Stack(
                   children: [
                     const WelcomeContainer(),
-                    if (appProvider.isLoading)
+                    if (appProvider.signInProvider.isLoading)
                       const Center(child: CircularProgressIndicator()),
-                    if (!appProvider.isLoading)
+                    if (!appProvider.signInProvider.isLoading)
                       SingleChildScrollView(
                         padding: const EdgeInsets.only(top: 300),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (appProvider.selectedDriver == null &&
-                                appProvider.driverList == null)
+                            if (appProvider.signInProvider.selectedDriver ==
+                                    null &&
+                                appProvider.signInProvider.driverList == null)
                               ..._buildDriverDocument(appProvider, context),
-                            if (appProvider.selectedDriver == null &&
-                                appProvider.driverList != null)
+                            if (appProvider.signInProvider.selectedDriver ==
+                                    null &&
+                                appProvider.signInProvider.driverList != null)
                               ..._buildCompanySelection(appProvider, context),
-                            if (appProvider.selectedDriver != null &&
-                                appProvider.selectedVehicle == null)
+                            if (appProvider.signInProvider.selectedDriver !=
+                                    null &&
+                                appProvider.signInProvider.selectedVehicle ==
+                                    null)
                               ..._buildVehicleSelection(appProvider, context),
                           ],
                         ),

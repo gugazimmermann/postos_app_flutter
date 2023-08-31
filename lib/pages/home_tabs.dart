@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 import 'package:provider/provider.dart';
 
 import '../providers/app_provider.dart';
@@ -31,7 +32,10 @@ class HomeTabsState extends State<HomeTabs>
       }
     });
 
-    Provider.of<AppProvider>(context, listen: false).fetchGasStationsData();
+    var appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.gasStationProvider.fetchGasStationsData(
+        appProvider.signInProvider.selectedVehicle,
+        appProvider.signInProvider.selectedDriver);
   }
 
   @override

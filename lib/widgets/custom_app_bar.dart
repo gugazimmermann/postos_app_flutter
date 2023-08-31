@@ -30,7 +30,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               final appProvider =
                   Provider.of<AppProvider>(context, listen: false);
-              appProvider.resetSelection();
+              appProvider.signInProvider.resetSelection();
               Navigator.of(dialogContext).pop();
             },
             child: const Text("Sair"),
