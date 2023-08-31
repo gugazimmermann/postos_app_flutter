@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:postos_flutter_app/constants/constants.dart';
 
 import '../../constants/colors.dart';
 import '../../models/gas_station.dart';
@@ -15,11 +16,9 @@ class GasStationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: ColorsConstants.cardWhite,
-      elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+      color: Lists.color,
+      elevation: Lists.elevation,
+      shape: Lists.shape,
       child: InkWell(
         onTap: () {
           showDialog(
@@ -31,7 +30,7 @@ class GasStationCard extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: Lists.padding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

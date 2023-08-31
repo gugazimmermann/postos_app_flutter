@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:postos_flutter_app/pages/gas_stations_transactions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/colors.dart';
@@ -41,7 +42,7 @@ class GasStationDialog extends StatelessWidget {
             gasStationSignatures(),
             divider(),
             const SizedBox(height: 4.0),
-            gasStationTransactions(),
+            gasStationTransactions(context),
             const SizedBox(height: 16.0),
             closeButton(context),
           ],
@@ -248,10 +249,12 @@ class GasStationDialog extends StatelessWidget {
     }
   }
 
-  Widget gasStationTransactions() {
+  Widget gasStationTransactions(BuildContext context) {
     final transactionsCount = gasStation.vehicle.transactions.length;
-    if (transactionsCount == 0) {
-      return const Text(
+    bool hasTransactions = transactionsCount > 0;
+    Widget transactionsText;
+    if (!hasTransactions) {
+      transactionsText = const Text(
         'Nenhum Abastecimento Realizado',
         style: TextStyle(
           fontSize: 16.0,
@@ -259,17 +262,15 @@ class GasStationDialog extends StatelessWidget {
         ),
       );
     } else {
-      return Row(
+      transactionsText = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            transactionsCount == 1
-                ? '1 Abastecimento Realizado'
-                : '$transactionsCount Abastecimentos Realizados',
+            hasTransactions
+                ? '$transactionsCount Abastecimentos Realizados'
+                : '1 Abastecimento Realizado',
             style: const TextStyle(
-              fontSize: 16.0,
-              color: ColorsConstants.textColor,
-            ),
+                fontSize: 16.0, color: ColorsConstants.textColor),
           ),
           Padding(
             padding: const EdgeInsets.all(4.0),
@@ -282,6 +283,20 @@ class GasStationDialog extends StatelessWidget {
         ],
       );
     }
+    return GestureDetector(
+      onTap:
+          hasTransactions ? () => _navigateToTransactionsPage(context) : null,
+      child: transactionsText,
+    );
+  }
+
+  void _navigateToTransactionsPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GasStationTransactions(gasStation: gasStation),
+      ),
+    );
   }
 
   Column divider() {
