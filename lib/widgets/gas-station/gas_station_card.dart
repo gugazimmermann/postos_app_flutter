@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 
 import '../../constants/colors.dart';
 import '../../models/gas_station.dart';
+import 'gas_station_dialog.dart';
 
 class GasStationCard extends StatelessWidget {
   final GasStationModel gasStation;
@@ -18,8 +19,12 @@ class GasStationCard extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Informações do posto em breve!')),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return GasStationInfo(
+                  gasStation: gasStation, userLocation: userLocation);
+            },
           );
         },
         child: Padding(

@@ -17,6 +17,6 @@ abstract class ColorsConstants {
   static const Color mapGasStation = Color(0xfff43f5e);
   static const Color mapDriver = Color(0xff1e40af);
   static const Color mapRoute = Color(0xff0ea5e9);
-  static const Color googleMaps = Color(0xff1EA362);
-  static const Color waze = Color(0xff056a82);
+  static const Color googleMaps = Color(0xffEA4335);
+  static const Color waze = Color(0xff4c8494);
 }

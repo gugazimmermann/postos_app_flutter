@@ -10,11 +10,11 @@ import '../models/gas_station.dart';
 import '../utils/haversine.dart';
 import '../constants/colors.dart';
 
+import '../utils/lauch_url.dart';
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/gas-station/gas_station_card.dart';
 
 import 'gas_stations_map.dart';
-import 'gas_stations_route.dart';
 
 class GasStationsTab extends StatefulWidget {
   const GasStationsTab({super.key});
@@ -163,28 +163,27 @@ class GasStationsTabState extends State<GasStationsTab>
 
   ActionPane slidableToMap(
       AppProvider appProvider, GasStationModel gasStation) {
-    LatLng? userLocation = appProvider.locationProvider.currentLocation != null
-        ? LatLng(
-            appProvider.locationProvider.currentLocation!.latitude!,
-            appProvider.locationProvider.currentLocation!.longitude!,
-          )
-        : null;
     return ActionPane(
       motion: const ScrollMotion(),
-      extentRatio: 0.20,
+      extentRatio: 0.50,
       children: [
         SlidableAction(
           onPressed: (BuildContext context) {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => GasStationsRoute(
-                userLocation: userLocation,
-                gasStation: gasStation,
-              ),
-            ));
+            launchMapsUrl(context, gasStation.latitudeAsDouble,
+                gasStation.longitudeAsDouble, 'google');
           },
-          backgroundColor: ColorsConstants.primaryColor,
+          backgroundColor: ColorsConstants.googleMaps,
           foregroundColor: ColorsConstants.white,
-          icon: MdiIcons.mapMarker,
+          icon: MdiIcons.googleMaps,
+        ),
+        SlidableAction(
+          onPressed: (BuildContext context) {
+            launchMapsUrl(context, gasStation.latitudeAsDouble,
+                gasStation.longitudeAsDouble, 'waze');
+          },
+          backgroundColor: ColorsConstants.waze,
+          foregroundColor: ColorsConstants.white,
+          icon: MdiIcons.waze,
         ),
       ],
     );
