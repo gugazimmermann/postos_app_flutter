@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/colors.dart';
 import '../../models/gas_station.dart';
+
+import '../../pages/gas_stations_products.dart';
 import '../../pages/gas_stations_route.dart';
 
-class GasStationInfo extends StatelessWidget {
+class GasStationDialog extends StatelessWidget {
   final GasStationModel gasStation;
   final LocationData? userLocation;
 
-  const GasStationInfo(
+  const GasStationDialog(
       {Key? key, required this.gasStation, required this.userLocation})
       : super(key: key);
 
@@ -35,7 +36,7 @@ class GasStationInfo extends StatelessWidget {
             divider(),
             gasStationFuelTypes(),
             divider(),
-            gasStationProducts(),
+            gasStationProducts(context),
             divider(),
             gasStationSignatures(),
             divider(),
@@ -140,7 +141,7 @@ class GasStationInfo extends StatelessWidget {
     }
   }
 
-  Column gasStationProducts() {
+  Column gasStationProducts(BuildContext context) {
     return Column(
       children: [
         const Text(
@@ -151,33 +152,45 @@ class GasStationInfo extends StatelessWidget {
               color: ColorsConstants.textColor),
         ),
         const SizedBox(height: 8.0),
-        gasStationProductsList(),
+        gasStationProductsList(context),
       ],
     );
   }
 
-  Widget gasStationProductsList() {
+  Widget gasStationProductsList(BuildContext context) {
     final productCount = gasStation.driver.products.length;
-    if (productCount == 0) {
-      return const Text(
+    bool hasProducts = productCount > 0;
+    Widget productsText;
+    if (!hasProducts) {
+      productsText = const Text(
         'Nenhum Produto Autorizado',
         style: TextStyle(
           fontSize: 16.0,
           color: ColorsConstants.textColor,
         ),
       );
-    } else if (productCount == 1) {
-      return const Text(
-        '1 Produto Autorizado',
-        style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
-      );
     } else {
-      return Text(
-        '$productCount Produtos Autorizados',
+      productsText = Text(
+        hasProducts
+            ? '$productCount Produtos Autorizados'
+            : '1 Produto Autorizado',
         style:
             const TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
       );
     }
+    return GestureDetector(
+      onTap: hasProducts ? () => _navigateToProductsPage(context) : null,
+      child: productsText,
+    );
+  }
+
+  void _navigateToProductsPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GasStationProducts(gasStation: gasStation),
+      ),
+    );
   }
 
   Widget gasStationSignatures() {

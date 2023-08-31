@@ -9,6 +9,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../models/gas_station.dart';
 import '../constants/colors.dart';
+import '../widgets/custom_page_app_bar.dart';
 import '../widgets/gas-station/gas_station_dialog.dart';
 import '../widgets/gas-station/gas_station_speed_dial.dart';
 
@@ -72,7 +73,7 @@ class GasStationsRouteState extends State<GasStationsRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
+      appBar: CustomPageAppBar(title: widget.gasStation.name),
       body: FlutterMap(
         options: mapOptions(),
         children: [
@@ -100,12 +101,6 @@ class GasStationsRouteState extends State<GasStationsRoute> {
     );
   }
 
-  AppBar appBar() {
-    return AppBar(
-        backgroundColor: ColorsConstants.white,
-        title: Text(widget.gasStation.name));
-  }
-
   MapOptions mapOptions() {
     return MapOptions(
       center: LatLng(widget.gasStation.latitudeAsDouble,
@@ -125,7 +120,7 @@ class GasStationsRouteState extends State<GasStationsRoute> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return GasStationInfo(
+                return GasStationDialog(
                     gasStation: widget.gasStation,
                     userLocation: widget.userLocation);
               },

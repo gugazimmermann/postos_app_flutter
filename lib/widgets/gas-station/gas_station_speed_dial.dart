@@ -41,7 +41,7 @@ class GasStationSpeedDial extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return GasStationInfo(
+              return GasStationDialog(
                   gasStation: gasStation, userLocation: userLocation);
             },
           );

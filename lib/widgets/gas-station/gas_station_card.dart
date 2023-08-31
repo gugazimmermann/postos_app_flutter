@@ -16,13 +16,16 @@ class GasStationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: ColorsConstants.cardWhite,
-      elevation: 3.0,
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: InkWell(
         onTap: () {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return GasStationInfo(
+              return GasStationDialog(
                   gasStation: gasStation, userLocation: userLocation);
             },
           );

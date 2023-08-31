@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../constants/colors.dart';
 import '../models/gas_station.dart';
+import '../widgets/custom_page_app_bar.dart';
 import '../widgets/gas-station/gas_station_dialog.dart';
 
 class GasStationsMap extends StatefulWidget {
@@ -33,9 +34,7 @@ class GasStationsMapState extends State<GasStationsMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: ColorsConstants.white,
-          title: const Text("Mapa dos Postos")),
+      appBar: const CustomPageAppBar(title: "Mapa dos Postos"),
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
@@ -60,7 +59,7 @@ class GasStationsMapState extends State<GasStationsMap> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return GasStationInfo(
+                        return GasStationDialog(
                             gasStation: gasStation,
                             userLocation: widget.userLocation);
                       },

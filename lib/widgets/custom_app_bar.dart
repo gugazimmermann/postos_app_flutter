@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:postos_flutter_app/constants/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../constants/colors.dart';
 import '../constants/strings.dart';
 
 import '../providers/app_provider.dart';

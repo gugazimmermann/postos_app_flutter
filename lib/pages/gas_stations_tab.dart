@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +47,7 @@ class GasStationsTabState extends State<GasStationsTab>
     final gasStations = _sortedGasStations(appProvider);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0),
       child: Stack(
         children: [
           ListView.builder(
