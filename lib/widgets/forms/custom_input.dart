@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
-import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 
 class CustomInput extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final Color textColor;
+  final Color borderColor;
 
   const CustomInput({
     super.key,
     required this.controller,
     required this.keyboardType,
     required this.textColor,
+    required this.borderColor,
   });
 
   @override
@@ -31,17 +31,21 @@ class CustomInput extends StatelessWidget {
         TextField(
           controller: controller,
           keyboardType: keyboardType,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
             labelText: SignInStrings.placeholderDocument,
             border: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: ColorsConstants.primaryColor, width: 2.0),
+              borderSide: BorderSide(color: borderColor, width: 2.0),
+              borderRadius: BorderRadius.circular(8.0),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: ColorsConstants.primaryColor, width: 2.0),
+              borderSide: BorderSide(color: borderColor, width: 2.0),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: borderColor, width: 2.0),
+              borderRadius: BorderRadius.circular(8.0),
             ),
           ),
         ),

@@ -14,7 +14,7 @@ class GasStationProvider with ChangeNotifier {
       VehicleModel? selectedVehicle, DriverModel? selectedDriver) async {
     if (selectedVehicle != null && selectedDriver != null) {
       var response = await ApiHelper.fetchGasStationsData(
-          selectedDriver!.company.id, selectedVehicle!.id, selectedDriver!.id);
+          selectedDriver.company.id, selectedVehicle.id, selectedDriver.id);
       if (response.data != null) {
         _gasStations = response.data!;
         notifyListeners();

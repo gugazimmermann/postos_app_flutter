@@ -103,7 +103,7 @@ class HomeTabsState extends State<HomeTabs>
                     Text(
                       label,
                       style: TextStyle(
-                        fontSize: 21.0,
+                        fontSize: 18.0,
                         color: isActive
                             ? ColorsConstants.activeTabText
                             : ColorsConstants.inactiveTabText,

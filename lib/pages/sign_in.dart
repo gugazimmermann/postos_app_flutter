@@ -26,6 +26,7 @@ class SignIn extends StatelessWidget {
         controller: appProvider.signInProvider.cpfController,
         keyboardType: TextInputType.number,
         textColor: ColorsConstants.textColor,
+        borderColor: ColorsConstants.primaryColor,
       ),
       CustomButton(
         label: GeneralStrings.buttonSend,
@@ -84,6 +85,8 @@ class SignIn extends StatelessWidget {
           if (value != null) appProvider.signInProvider.selectDriver(value);
         },
         itemText: (item) => item.company.name,
+        textColor: ColorsConstants.textColor,
+        borderColor: ColorsConstants.primaryColor,
       ),
       CustomButton(
         label: GeneralStrings.buttonBack,
@@ -105,6 +108,8 @@ class SignIn extends StatelessWidget {
         },
         itemText: (item) =>
             '${item.plate} - ${item.manufacturer} / ${item.model}',
+        textColor: ColorsConstants.textColor,
+        borderColor: ColorsConstants.primaryColor,
       ),
       CustomButton(
         label: GeneralStrings.buttonSend,

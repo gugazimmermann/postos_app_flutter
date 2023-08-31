@@ -101,6 +101,7 @@ class SignInProvider with ChangeNotifier {
     } else {
       _isLoading = false;
       errorNotifier.value = response.error?.toString();
+      notifyListeners();
     }
   }
 
