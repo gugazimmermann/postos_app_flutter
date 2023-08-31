@@ -11,12 +11,14 @@ import '../constants/colors.dart';
 import '../widgets/gas-station/gas_station_speed_dial.dart';
 
 class GasStationsRoute extends StatefulWidget {
-  final LatLng userLocation;
+  final LatLng? userLocation;
   final GasStationModel gasStation;
 
-  const GasStationsRoute(
-      {Key? key, required this.userLocation, required this.gasStation})
-      : super(key: key);
+  const GasStationsRoute({
+    Key? key,
+    required this.userLocation,
+    required this.gasStation,
+  }) : super(key: key);
 
   @override
   GasStationsRouteState createState() => GasStationsRouteState();
@@ -28,18 +30,20 @@ class GasStationsRouteState extends State<GasStationsRoute> {
   @override
   void initState() {
     super.initState();
-    fetchRoute(
-            widget.userLocation,
-            LatLng(widget.gasStation.latitudeAsDouble,
-                widget.gasStation.longitudeAsDouble),
-            "58c34e31-fac4-4417-8d87-ff62270593ed")
-        .then((encoded) {
-      if (encoded != null) {
-        setState(() {
-          routePoints = decodePoly(encoded);
-        });
-      }
-    });
+    if (widget.userLocation != null) {
+      fetchRoute(
+              widget.userLocation!,
+              LatLng(widget.gasStation.latitudeAsDouble,
+                  widget.gasStation.longitudeAsDouble),
+              "58c34e31-fac4-4417-8d87-ff62270593ed")
+          .then((encoded) {
+        if (encoded != null) {
+          setState(() {
+            routePoints = decodePoly(encoded);
+          });
+        }
+      });
+    }
   }
 
   Future<String?> fetchRoute(LatLng start, LatLng end, String apiKey) async {
@@ -81,13 +85,12 @@ class GasStationsRouteState extends State<GasStationsRoute> {
           MarkerLayer(
             markers: [
               gasStationMarker(),
-              driverMarker(),
+              if (widget.userLocation != null) driverMarker(),
             ],
           ),
         ],
       ),
       floatingActionButton: GasStationSpeedDial(
-        // Uso do novo widget
         userLocation: widget.userLocation,
         gasStation: widget.gasStation,
       ),
@@ -126,7 +129,7 @@ class GasStationsRouteState extends State<GasStationsRoute> {
     return Marker(
       width: 64,
       height: 64,
-      point: widget.userLocation,
+      point: widget.userLocation!,
       builder: (context) => Icon(
         MdiIcons.carConnected,
         color: ColorsConstants.mapDriver,

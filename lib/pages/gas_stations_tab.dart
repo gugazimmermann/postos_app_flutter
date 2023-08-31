@@ -8,9 +8,7 @@ import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../models/gas_station.dart';
 import '../utils/haversine.dart';
-
 import '../constants/colors.dart';
-import '../constants/constants.dart';
 
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/gas-station/gas_station_card.dart';
@@ -100,7 +98,7 @@ class GasStationsTabState extends State<GasStationsTab>
     if (appProvider.locationProvider.isLoadingLocation) {
       widgets.add(loadingLocation());
     } else if (locationError != null) {
-      widgets.add(errorLocation(context));
+      widgets.add(errorLocation(locationError, context));
     } else if (userLocation != null) {
       widgets.add(
           mapButton(userLocation, appProvider.gasStationProvider.gasStations));
@@ -137,8 +135,8 @@ class GasStationsTabState extends State<GasStationsTab>
     );
   }
 
-  Align errorLocation(BuildContext context) {
-    customFlushBarError(LocationConstants.error, context);
+  Align errorLocation(String locationError, BuildContext context) {
+    customFlushBarError(locationError, context, duration: 10);
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
@@ -165,23 +163,24 @@ class GasStationsTabState extends State<GasStationsTab>
 
   ActionPane slidableToMap(
       AppProvider appProvider, GasStationModel gasStation) {
+    LatLng? userLocation = appProvider.locationProvider.currentLocation != null
+        ? LatLng(
+            appProvider.locationProvider.currentLocation!.latitude!,
+            appProvider.locationProvider.currentLocation!.longitude!,
+          )
+        : null;
     return ActionPane(
       motion: const ScrollMotion(),
       extentRatio: 0.20,
       children: [
         SlidableAction(
           onPressed: (BuildContext context) {
-            if (appProvider.locationProvider.currentLocation != null) {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => GasStationsRoute(
-                  userLocation: LatLng(
-                    appProvider.locationProvider.currentLocation!.latitude!,
-                    appProvider.locationProvider.currentLocation!.longitude!,
-                  ),
-                  gasStation: gasStation,
-                ),
-              ));
-            }
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => GasStationsRoute(
+                userLocation: userLocation,
+                gasStation: gasStation,
+              ),
+            ));
           },
           backgroundColor: ColorsConstants.primaryColor,
           foregroundColor: ColorsConstants.white,

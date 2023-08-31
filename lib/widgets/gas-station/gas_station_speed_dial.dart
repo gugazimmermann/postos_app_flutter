@@ -10,7 +10,7 @@ import '../../models/gas_station.dart';
 import '../custom_flushbar_error.dart';
 
 class GasStationSpeedDial extends StatelessWidget {
-  final LatLng userLocation;
+  final LatLng? userLocation;
   final GasStationModel gasStation;
 
   const GasStationSpeedDial({

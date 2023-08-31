@@ -3,7 +3,8 @@ import 'package:another_flushbar/flushbar.dart';
 
 import '../constants/colors.dart';
 
-void customFlushBarError(String message, BuildContext context) {
+void customFlushBarError(String message, BuildContext context,
+    {int duration = 5}) {
   Future.delayed(Duration.zero, () {
     Flushbar(
       messageText: Row(
@@ -20,7 +21,7 @@ void customFlushBarError(String message, BuildContext context) {
       flushbarPosition: FlushbarPosition.TOP,
       margin: const EdgeInsets.all(8.0),
       borderRadius: BorderRadius.circular(8.0),
-      duration: const Duration(seconds: 5),
+      duration: Duration(seconds: duration),
     ).show(context);
   });
 }
