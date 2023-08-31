@@ -35,7 +35,9 @@ class ScheduleDialog extends StatelessWidget {
             Text(
               schedule.scheduleService.name,
               style: const TextStyle(
-                  fontSize: 18.0, color: ColorsConstants.textColor),
+                  fontSize: 21.0,
+                  color: ColorsConstants.textColor,
+                  fontWeight: FontWeight.bold),
             ),
             Text(
               schedule.gasStation.name,
