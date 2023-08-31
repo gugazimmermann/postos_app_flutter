@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/constants.dart';
 
 import '../constants/colors.dart';
+import '../constants/constants.dart';
 import '../models/gas_station.dart';
 import '../models/transaction.dart';
 import '../widgets/custom_page_app_bar.dart';

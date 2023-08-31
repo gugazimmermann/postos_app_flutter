@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:postos_flutter_app/constants/constants.dart';
-import 'package:postos_flutter_app/models/transaction.dart';
-import 'package:postos_flutter_app/models/transaction_product.dart';
 
 import '../constants/colors.dart';
+import '../constants/constants.dart';
+import '../models/transaction.dart';
+import '../models/transaction_product.dart';
 import '../widgets/custom_page_app_bar.dart';
 
 class GasStationTransactionsProducts extends StatelessWidget {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/constants.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/constants.dart';
 import '../providers/app_provider.dart';
 import '../models/gas_station.dart';
 import '../utils/haversine.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/pages/gas_stations_transactions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/colors.dart';
@@ -9,6 +8,7 @@ import '../../models/gas_station.dart';
 
 import '../../pages/gas_stations_products.dart';
 import '../../pages/gas_stations_route.dart';
+import '../../pages/gas_stations_transactions.dart';
 
 class GasStationDialog extends StatelessWidget {
   final GasStationModel gasStation;
