@@ -32,7 +32,16 @@ class GasStationInfo extends StatelessWidget {
             gasStationContactRow(context),
             const SizedBox(height: 16.0),
             gasStationAddress(),
-            const Divider(),
+            divider(),
+            gasStationFuelTypes(),
+            divider(),
+            gasStationProducts(),
+            divider(),
+            gasStationSignatures(),
+            divider(),
+            const SizedBox(height: 4.0),
+            gasStationTransactions(),
+            const SizedBox(height: 16.0),
             closeButton(context),
           ],
         ),
@@ -96,6 +105,184 @@ class GasStationInfo extends StatelessWidget {
     );
   }
 
+  Column gasStationFuelTypes() {
+    return Column(
+      children: [
+        const Text(
+          'Combustíveis Autorizados',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+              color: ColorsConstants.textColor),
+        ),
+        const SizedBox(height: 8.0),
+        gasStationFuelTypesList(),
+      ],
+    );
+  }
+
+  Widget gasStationFuelTypesList() {
+    final fuelTypes = gasStation.vehicle.fuelTypes;
+    if (fuelTypes.isEmpty) {
+      return const Text(
+        'Veículo sem Restrições',
+        style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
+      );
+    } else {
+      final fuelTypeNames = fuelTypes.map((type) => type.name).join(', ');
+      return Text(
+        fuelTypeNames,
+        style: const TextStyle(
+            fontSize: 16.0,
+            color: ColorsConstants.primaryColor,
+            fontWeight: FontWeight.bold),
+      );
+    }
+  }
+
+  Column gasStationProducts() {
+    return Column(
+      children: [
+        const Text(
+          'Produtos',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+              color: ColorsConstants.textColor),
+        ),
+        const SizedBox(height: 8.0),
+        gasStationProductsList(),
+      ],
+    );
+  }
+
+  Widget gasStationProductsList() {
+    final productCount = gasStation.driver.products.length;
+    if (productCount == 0) {
+      return const Text(
+        'Nenhum Produto Autorizado',
+        style: TextStyle(
+          fontSize: 16.0,
+          color: ColorsConstants.textColor,
+        ),
+      );
+    } else if (productCount == 1) {
+      return const Text(
+        '1 Produto Autorizado',
+        style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
+      );
+    } else {
+      return Text(
+        '$productCount Produtos Autorizados',
+        style:
+            const TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
+      );
+    }
+  }
+
+  Widget gasStationSignatures() {
+    return Column(
+      children: [
+        const Text(
+          'Assinaturas',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+              color: ColorsConstants.textColor),
+        ),
+        const SizedBox(height: 8.0),
+        gasStationSignaturesList(),
+      ],
+    );
+  }
+
+  Widget gasStationSignaturesList() {
+    final availableSignatures = gasStation.signatures;
+    final driverSignatures = gasStation.driver.signatures;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: availableSignatures.map((signature) {
+        final isDriverSignature = driverSignatures
+            .any((driverSignature) => driverSignature.type == signature.type);
+        final icon = _getSignatureIcon(signature.type);
+        final color = signature.active
+            ? ColorsConstants.primaryColor
+            : ColorsConstants.inactive;
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Icon(
+            icon,
+            color: isDriverSignature ? ColorsConstants.success : color,
+            size: 36,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  IconData _getSignatureIcon(String signatureType) {
+    switch (signatureType) {
+      case 'Biometric':
+        return MdiIcons.fingerprint;
+      case 'Facial Recognition':
+        return MdiIcons.faceRecognition;
+      case 'Digital Signature':
+        return MdiIcons.drawPen;
+      case 'Code':
+        return MdiIcons.numeric;
+      default:
+        return Icons.error;
+    }
+  }
+
+  Widget gasStationTransactions() {
+    final transactionsCount = gasStation.vehicle.transactions.length;
+    if (transactionsCount == 0) {
+      return const Text(
+        'Nenhum Abastecimento Realizado',
+        style: TextStyle(
+          fontSize: 16.0,
+          color: ColorsConstants.textColor,
+        ),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            transactionsCount == 1
+                ? '1 Abastecimento Realizado'
+                : '$transactionsCount Abastecimentos Realizados',
+            style: const TextStyle(
+              fontSize: 16.0,
+              color: ColorsConstants.textColor,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(
+              MdiIcons.openInApp,
+              size: 21,
+              color: ColorsConstants.textColor,
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
+  Column divider() {
+    return const Column(
+      children: [
+        SizedBox(height: 4.0),
+        Divider(
+          color: ColorsConstants.divider,
+        ),
+        SizedBox(height: 4.0),
+      ],
+    );
+  }
+
   Align closeButton(BuildContext context) {
     return Align(
       alignment: Alignment.center,
@@ -122,9 +309,7 @@ class GasStationInfo extends StatelessWidget {
   void _openMap(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => GasStationsRoute(
-        userLocation: userLocation != null
-            ? LatLng(userLocation!.latitude!, userLocation!.longitude!)
-            : null,
+        userLocation: userLocation,
         gasStation: gasStation,
       ),
     ));

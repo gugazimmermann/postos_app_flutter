@@ -112,7 +112,6 @@ class GasStationsTabState extends State<GasStationsTab>
     if (userLocation == null) {
       return const Align();
     }
-    LatLng userLatLng = LatLng(userLocation.latitude!, userLocation.longitude!);
     return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
@@ -122,7 +121,7 @@ class GasStationsTabState extends State<GasStationsTab>
             if (gasStations != null) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => GasStationsMap(
-                  userLocation: userLatLng,
+                  userLocation: userLocation,
                   gasStations: gasStations,
                 ),
               ));

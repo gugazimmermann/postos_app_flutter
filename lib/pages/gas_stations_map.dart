@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../constants/colors.dart';
 import '../models/gas_station.dart';
+import '../widgets/gas-station/gas_station_dialog.dart';
 
 class GasStationsMap extends StatefulWidget {
   final List<GasStationModel>? gasStations;
-  final LatLng userLocation;
+  final LocationData? userLocation;
 
   const GasStationsMap({
     Key? key,
     this.gasStations,
-    required this.userLocation,
+    this.userLocation,
   }) : super(key: key);
 
   @override
@@ -22,29 +24,6 @@ class GasStationsMap extends StatefulWidget {
 }
 
 class GasStationsMapState extends State<GasStationsMap> {
-  final List<Color> markerColors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.purple,
-    Colors.orange,
-    Colors.yellow,
-    Colors.pink,
-    Colors.teal,
-    Colors.cyan,
-    Colors.indigo,
-    Colors.brown,
-    Colors.lime,
-    Colors.amber,
-    Colors.deepOrange,
-    Colors.lightBlue,
-    Colors.lightGreen,
-    Colors.deepPurple,
-    Colors.blueGrey,
-    Colors.grey,
-    Colors.black,
-  ];
-
   final MapController mapController = MapController();
 
   void _moveMap(LatLng coords) {
@@ -60,7 +39,7 @@ class GasStationsMapState extends State<GasStationsMap> {
       body: FlutterMap(
         mapController: mapController,
         options: MapOptions(
-          center: widget.userLocation,
+          center: _getCenterLocation(),
           zoom: 13.0,
         ),
         children: [
@@ -78,9 +57,13 @@ class GasStationsMapState extends State<GasStationsMap> {
                     gasStation.latitudeAsDouble, gasStation.longitudeAsDouble),
                 builder: (context) => GestureDetector(
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Informações do posto em breve!')),
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return GasStationInfo(
+                            gasStation: gasStation,
+                            userLocation: widget.userLocation);
+                      },
                     );
                   },
                   child: Container(
@@ -120,5 +103,21 @@ class GasStationsMapState extends State<GasStationsMap> {
         }).toList(),
       ),
     );
+  }
+
+  LatLng _getCenterLocation() {
+    if (widget.userLocation != null) {
+      return LatLng(
+        widget.userLocation!.latitude!,
+        widget.userLocation!.longitude!,
+      );
+    } else if (widget.gasStations!.isNotEmpty) {
+      return LatLng(
+        widget.gasStations![0].latitudeAsDouble,
+        widget.gasStations![0].longitudeAsDouble,
+      );
+    } else {
+      return const LatLng(-26.9674445, -48.9099775);
+    }
   }
 }

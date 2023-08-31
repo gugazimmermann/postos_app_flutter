@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../constants/colors.dart';
 import '../../models/gas_station.dart';
 import '../../utils/lauch_url.dart';
+import 'gas_station_dialog.dart';
 
 class GasStationSpeedDial extends StatelessWidget {
-  final LatLng? userLocation;
+  final LocationData? userLocation;
   final GasStationModel gasStation;
 
   const GasStationSpeedDial({
@@ -37,8 +38,12 @@ class GasStationSpeedDial extends StatelessWidget {
   SpeedDialChild gasStationInfo(BuildContext context) {
     return SpeedDialChild(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Informações do posto em breve!')),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return GasStationInfo(
+                  gasStation: gasStation, userLocation: userLocation);
+            },
           );
         },
         backgroundColor: ColorsConstants.mapGasStation,

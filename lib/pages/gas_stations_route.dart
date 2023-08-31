@@ -4,14 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import '../models/gas_station.dart';
 
+import '../models/gas_station.dart';
 import '../constants/colors.dart';
+import '../widgets/gas-station/gas_station_dialog.dart';
 import '../widgets/gas-station/gas_station_speed_dial.dart';
 
 class GasStationsRoute extends StatefulWidget {
-  final LatLng? userLocation;
+  final LocationData? userLocation;
   final GasStationModel gasStation;
 
   const GasStationsRoute({
@@ -32,7 +34,8 @@ class GasStationsRouteState extends State<GasStationsRoute> {
     super.initState();
     if (widget.userLocation != null) {
       fetchRoute(
-              widget.userLocation!,
+              LatLng(widget.userLocation!.latitude!,
+                  widget.userLocation!.longitude!),
               LatLng(widget.gasStation.latitudeAsDouble,
                   widget.gasStation.longitudeAsDouble),
               "58c34e31-fac4-4417-8d87-ff62270593ed")
@@ -117,11 +120,22 @@ class GasStationsRouteState extends State<GasStationsRoute> {
       height: 64,
       point: LatLng(widget.gasStation.latitudeAsDouble,
           widget.gasStation.longitudeAsDouble),
-      builder: (context) => Icon(
-        MdiIcons.gasStation,
-        color: ColorsConstants.mapGasStation,
-        size: 64,
-      ),
+      builder: (context) => GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return GasStationInfo(
+                    gasStation: widget.gasStation,
+                    userLocation: widget.userLocation);
+              },
+            );
+          },
+          child: Icon(
+            MdiIcons.gasStation,
+            color: ColorsConstants.mapGasStation,
+            size: 64,
+          )),
     );
   }
 
@@ -129,7 +143,8 @@ class GasStationsRouteState extends State<GasStationsRoute> {
     return Marker(
       width: 64,
       height: 64,
-      point: widget.userLocation!,
+      point: LatLng(
+          widget.userLocation!.latitude!, widget.userLocation!.longitude!),
       builder: (context) => Icon(
         MdiIcons.carConnected,
         color: ColorsConstants.mapDriver,
