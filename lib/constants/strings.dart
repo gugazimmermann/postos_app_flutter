@@ -31,6 +31,7 @@ abstract class HomeTabsStrings {
 
 abstract class GasStationStrings {
   static const String errorGasStations = 'Erro ao buscar postos.';
+  static const String noGasStations = 'Nenhum Posto para mostrar.';
   static const String gasStationsMap = 'Mapa dos Postos';
   static const String fuelTypes = 'Combustíveis Autorizados';
   static const String fuelTypesAll = 'Veículo sem Restrições';
@@ -44,4 +45,9 @@ abstract class GasStationStrings {
   static const String transactionsPlural = 'Abastecimentos Realizados';
   static const String transactionsSingular = 'Abastecimento Realizado';
   static const String transactionsIn = 'Abastecimentos em';
+}
+
+abstract class SchedulesStrings {
+  static const String errorSchedule = 'Erro ao buscar agendamentos.';
+  static const String noSchedule = 'Nenhum Agendamento para mostrar.';
 }

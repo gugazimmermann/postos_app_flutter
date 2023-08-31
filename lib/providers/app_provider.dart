@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 
 import 'gas_stations_provider.dart';
 import 'location_provider.dart';
+import 'schedules_provider.dart';
 import 'sign_in_provider.dart';
 
 class AppProvider with ChangeNotifier {
   final SignInProvider _signInProvider;
   final LocationProvider _locationProvider;
-  final GasStationProvider _gasStationProvider;
+  final GasStationsProvider _gasStationsProvider;
+  final SchedulesProvider _schedulesProvider;
 
   AppProvider()
       : _signInProvider = SignInProvider(),
         _locationProvider = LocationProvider(),
-        _gasStationProvider = GasStationProvider() {
+        _gasStationsProvider = GasStationsProvider(),
+        _schedulesProvider = SchedulesProvider() {
     _signInProvider.addListener(_handleSignInProviderChange);
     _locationProvider.addListener(_handleLocationProviderChange);
-    _gasStationProvider.addListener(_handleGasStationProviderChange);
+    _gasStationsProvider.addListener(_handleGasStationsProviderChange);
+    _schedulesProvider.addListener(_handleSchedulesProviderChange);
   }
 
   void _handleSignInProviderChange() {
@@ -26,7 +30,11 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _handleGasStationProviderChange() {
+  void _handleGasStationsProviderChange() {
+    notifyListeners();
+  }
+
+  void _handleSchedulesProviderChange() {
     notifyListeners();
   }
 
@@ -34,11 +42,13 @@ class AppProvider with ChangeNotifier {
   void dispose() {
     _signInProvider.removeListener(_handleSignInProviderChange);
     _locationProvider.removeListener(_handleLocationProviderChange);
-    _gasStationProvider.removeListener(_handleGasStationProviderChange);
+    _gasStationsProvider.removeListener(_handleGasStationsProviderChange);
+    _schedulesProvider.removeListener(_handleSchedulesProviderChange);
     super.dispose();
   }
 
   SignInProvider get signInProvider => _signInProvider;
   LocationProvider get locationProvider => _locationProvider;
-  GasStationProvider get gasStationProvider => _gasStationProvider;
+  GasStationsProvider get gasStationsProvider => _gasStationsProvider;
+  SchedulesProvider get schedulesProvider => _schedulesProvider;
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:postos_flutter_app/models/schedule.dart';
 
 import '../constants/strings.dart';
 import '../constants/constants.dart';
@@ -60,12 +61,29 @@ class ApiHelper {
       var response = await http.get(Uri.parse(
           '${ApiConstants.baseUrl}/gas-stations/$companyId/$vehicleId/$driverId'));
       if (response.statusCode == 200) {
-        List<GasStationModel> GasStations = (json.decode(response.body) as List)
+        List<GasStationModel> gasStations = (json.decode(response.body) as List)
             .map((data) => GasStationModel.fromJson(data))
             .toList();
-        return ApiResponse(data: GasStations);
+        return ApiResponse(data: gasStations);
       }
       return ApiResponse(error: Exception(GasStationStrings.errorGasStations));
+    } catch (e) {
+      return ApiResponse(error: Exception(e.toString()));
+    }
+  }
+
+  static Future<ApiResponse<List<ScheduleModel>>> fetchSchedulesData(
+      String companyId, String vehicleId) async {
+    try {
+      var response = await http.get(
+          Uri.parse('${ApiConstants.baseUrl}/schedules/$companyId/$vehicleId'));
+      if (response.statusCode == 200) {
+        List<ScheduleModel> schedules = (json.decode(response.body) as List)
+            .map((data) => ScheduleModel.fromJson(data))
+            .toList();
+        return ApiResponse(data: schedules);
+      }
+      return ApiResponse(error: Exception(SchedulesStrings.errorSchedule));
     } catch (e) {
       return ApiResponse(error: Exception(e.toString()));
     }

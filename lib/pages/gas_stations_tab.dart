@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:postos_flutter_app/constants/strings.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
@@ -51,19 +52,22 @@ class GasStationsTabState extends State<GasStationsTab>
       padding: Lists.edgeInsets,
       child: Stack(
         children: [
-          ListView.builder(
-            itemCount: gasStations?.length ?? 0,
-            itemBuilder: (context, index) {
-              return Slidable(
-                startActionPane:
-                    slidableToMap(appProvider, gasStations![index]),
-                child: GasStationCard(
-                  gasStation: gasStations[index],
-                  userLocation: appProvider.locationProvider.currentLocation,
-                ),
-              );
-            },
-          ),
+          gasStations != null && gasStations.isNotEmpty
+              ? ListView.builder(
+                  itemCount: gasStations.length,
+                  itemBuilder: (context, index) {
+                    return Slidable(
+                      startActionPane:
+                          slidableToMap(appProvider, gasStations![index]),
+                      child: GasStationCard(
+                        gasStation: gasStations[index],
+                        userLocation:
+                            appProvider.locationProvider.currentLocation,
+                      ),
+                    );
+                  },
+                )
+              : noGasStations(),
           ..._buildLocationWidgets(appProvider),
         ],
       ),
@@ -72,7 +76,7 @@ class GasStationsTabState extends State<GasStationsTab>
 
   List<GasStationModel>? _sortedGasStations(AppProvider appProvider) {
     final userLocation = appProvider.locationProvider.currentLocation;
-    final gasStations = appProvider.gasStationProvider.gasStations;
+    final gasStations = appProvider.gasStationsProvider.gasStations;
 
     if (userLocation != null && gasStations != null) {
       for (var station in gasStations) {
@@ -101,7 +105,7 @@ class GasStationsTabState extends State<GasStationsTab>
       widgets.add(errorLocation(locationError, context));
     } else if (userLocation != null) {
       widgets.add(
-          mapButton(userLocation, appProvider.gasStationProvider.gasStations));
+          mapButton(userLocation, appProvider.gasStationsProvider.gasStations));
     }
 
     return widgets;
@@ -185,6 +189,29 @@ class GasStationsTabState extends State<GasStationsTab>
           icon: MdiIcons.waze,
         ),
       ],
+    );
+  }
+
+  SizedBox noGasStations() {
+    return SizedBox(
+      height: 100,
+      child: Card(
+        elevation: Lists.elevation,
+        shape: Lists.shape,
+        child: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: Text(
+              GasStationStrings.noGasStations,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorsConstants.danger,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

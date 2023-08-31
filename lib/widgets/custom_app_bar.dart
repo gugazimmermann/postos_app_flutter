@@ -51,8 +51,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 40.0,
           ),
           const SizedBox(width: 12),
-          const Text(AppStrings.title,
-              style: TextStyle(fontSize: 21, color: ColorsConstants.textColor)),
+          const Expanded(
+            child: Text(
+              AppStrings.title,
+              style: TextStyle(fontSize: 21, color: ColorsConstants.textColor),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
       actions: [

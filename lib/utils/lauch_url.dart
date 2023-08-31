@@ -17,13 +17,5 @@ void launchMapsUrl(BuildContext context, double lat, double lng, String type) {
     urlString = 'waze://?ll=$lat,$lng&navigate=yes';
   }
   Uri url = Uri.parse(urlString);
-  _tryToLaunchUrl(context, url);
-}
-
-void _tryToLaunchUrl(BuildContext context, Uri url) async {
-  if (await canLaunchUrl(url)) {
-    launchUrl(url);
-  } else {
-    customFlushBarError(AppStrings.noAppInstalled, context);
-  }
+  launchUrl(url);
 }
