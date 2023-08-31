@@ -3,14 +3,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/constants.dart';
 import 'package:provider/provider.dart';
 
-import '../models/gas_station.dart';
 import '../providers/app_provider.dart';
+import '../models/gas_station.dart';
+import '../utils/haversine.dart';
 
 import '../constants/colors.dart';
-import '../utils/haversine.dart';
+import '../constants/constants.dart';
+
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/gas-station/gas_station_card.dart';
 
@@ -46,9 +47,34 @@ class GasStationsTabState extends State<GasStationsTab>
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
+    final gasStations = _sortedGasStations(appProvider);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Stack(
+        children: [
+          ListView.builder(
+            itemCount: gasStations?.length ?? 0,
+            itemBuilder: (context, index) {
+              return Slidable(
+                startActionPane:
+                    slidableToMap(appProvider, gasStations![index]),
+                child: GasStationCard(
+                  gasStation: gasStations[index],
+                  userLocation: appProvider.locationProvider.currentLocation,
+                ),
+              );
+            },
+          ),
+          ..._buildLocationWidgets(appProvider),
+        ],
+      ),
+    );
+  }
+
+  List<GasStationModel>? _sortedGasStations(AppProvider appProvider) {
     final userLocation = appProvider.locationProvider.currentLocation;
     final gasStations = appProvider.gasStationProvider.gasStations;
-    final locationError = appProvider.locationProvider.locationError;
 
     if (userLocation != null && gasStations != null) {
       for (var station in gasStations) {
@@ -62,36 +88,29 @@ class GasStationsTabState extends State<GasStationsTab>
       gasStations.sort((a, b) => a.distance!.compareTo(b.distance!));
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Stack(
-        children: [
-          ListView.builder(
-            itemCount: gasStations?.length ?? 0,
-            itemBuilder: (context, index) {
-              return Slidable(
-                  startActionPane:
-                      slidableToMap(appProvider, gasStations![index]),
-                  child: GasStationCard(
-                      gasStation: gasStations[index],
-                      userLocation: userLocation));
-            },
-          ),
-          if (appProvider.locationProvider.isLoadingLocation) loadingLocation(),
-          if (appProvider.locationProvider.isLoadingLocation == false &&
-              locationError != null)
-            errorLocation(context),
-          if (appProvider.locationProvider.isLoadingLocation == false &&
-              locationError == null &&
-              userLocation != null)
-            mapButton(userLocation, gasStations),
-        ],
-      ),
-    );
+    return gasStations;
+  }
+
+  List<Widget> _buildLocationWidgets(AppProvider appProvider) {
+    final locationError = appProvider.locationProvider.locationError;
+    final userLocation = appProvider.locationProvider.currentLocation;
+
+    List<Widget> widgets = [];
+
+    if (appProvider.locationProvider.isLoadingLocation) {
+      widgets.add(loadingLocation());
+    } else if (locationError != null) {
+      widgets.add(errorLocation(context));
+    } else if (userLocation != null) {
+      widgets.add(
+          mapButton(userLocation, appProvider.gasStationProvider.gasStations));
+    }
+
+    return widgets;
   }
 
   Align mapButton(
-      LocationData? userLocation, List<GasSstationModel>? gasStations) {
+      LocationData? userLocation, List<GasStationModel>? gasStations) {
     if (userLocation == null) {
       return const Align();
     }
@@ -145,7 +164,7 @@ class GasStationsTabState extends State<GasStationsTab>
   }
 
   ActionPane slidableToMap(
-      AppProvider appProvider, GasSstationModel gasStation) {
+      AppProvider appProvider, GasStationModel gasStation) {
     return ActionPane(
       motion: const ScrollMotion(),
       extentRatio: 0.20,

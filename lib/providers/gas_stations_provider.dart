@@ -7,8 +7,8 @@ import '../utils/api_helper.dart';
 
 class GasStationProvider with ChangeNotifier {
   final errorNotifier = ValueNotifier<String?>(null);
-  List<GasSstationModel>? _gasStations;
-  List<GasSstationModel>? get gasStations => _gasStations;
+  List<GasStationModel>? _gasStations;
+  List<GasStationModel>? get gasStations => _gasStations;
 
   Future<void> fetchGasStationsData(
       VehicleModel? selectedVehicle, DriverModel? selectedDriver) async {

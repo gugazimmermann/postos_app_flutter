@@ -8,7 +8,7 @@ import '../constants/colors.dart';
 import '../models/gas_station.dart';
 
 class GasStationsMap extends StatefulWidget {
-  final List<GasSstationModel>? gasStations;
+  final List<GasStationModel>? gasStations;
   final LatLng userLocation;
 
   const GasStationsMap({
@@ -70,7 +70,7 @@ class GasStationsMapState extends State<GasStationsMap> {
           ),
           MarkerLayer(
             markers: widget.gasStations!.asMap().entries.map((entry) {
-              GasSstationModel gasStation = entry.value;
+              GasStationModel gasStation = entry.value;
               return Marker(
                 width: 40,
                 height: 40,

@@ -54,17 +54,16 @@ class ApiHelper {
     }
   }
 
-  static Future<ApiResponse<List<GasSstationModel>>> fetchGasStationsData(
+  static Future<ApiResponse<List<GasStationModel>>> fetchGasStationsData(
       String companyId, String vehicleId, String driverId) async {
     try {
       var response = await http.get(Uri.parse(
           '${ApiConstants.baseUrl}/gas-stations/$companyId/$vehicleId/$driverId'));
       if (response.statusCode == 200) {
-        List<GasSstationModel> gasSstations =
-            (json.decode(response.body) as List)
-                .map((data) => GasSstationModel.fromJson(data))
-                .toList();
-        return ApiResponse(data: gasSstations);
+        List<GasStationModel> GasStations = (json.decode(response.body) as List)
+            .map((data) => GasStationModel.fromJson(data))
+            .toList();
+        return ApiResponse(data: GasStations);
       }
       return ApiResponse(error: Exception(GasStationStrings.errorGasStations));
     } catch (e) {

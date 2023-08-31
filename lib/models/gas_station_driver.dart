@@ -1,13 +1,13 @@
 import 'product.dart';
 import 'signature.dart';
 
-class GasSstationDriverModel {
+class GasStationDriverModel {
   final List<SignatureModel> signatures;
   final List<ProductModel> products;
 
-  GasSstationDriverModel({required this.signatures, required this.products});
+  GasStationDriverModel({required this.signatures, required this.products});
 
-  factory GasSstationDriverModel.fromJson(Map<String, dynamic> json) {
+  factory GasStationDriverModel.fromJson(Map<String, dynamic> json) {
     List<SignatureModel> signaturesList = (json['signatures'] as List)
         .map((item) => SignatureModel.fromJson(item))
         .toList();
@@ -15,7 +15,7 @@ class GasSstationDriverModel {
         .map((item) => ProductModel.fromJson(item))
         .toList();
 
-    return GasSstationDriverModel(
+    return GasStationDriverModel(
       signatures: signaturesList,
       products: productsList,
     );

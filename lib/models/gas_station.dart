@@ -2,7 +2,7 @@ import 'signature.dart';
 import 'gas_station_vehicle.dart';
 import 'gas_station_driver.dart';
 
-class GasSstationModel {
+class GasStationModel {
   final String id;
   final String name;
   final String phone;
@@ -14,11 +14,11 @@ class GasSstationModel {
   final String longitude;
   final bool active;
   final List<SignatureModel> signatures;
-  final GasSstationVehicleModel vehicle;
-  final GasSstationDriverModel driver;
+  final GasStationVehicleModel vehicle;
+  final GasStationDriverModel driver;
   double? distance;
 
-  GasSstationModel({
+  GasStationModel({
     required this.id,
     required this.name,
     required this.phone,
@@ -38,12 +38,12 @@ class GasSstationModel {
   double get latitudeAsDouble => double.parse(latitude);
   double get longitudeAsDouble => double.parse(longitude);
 
-  factory GasSstationModel.fromJson(Map<String, dynamic> json) {
+  factory GasStationModel.fromJson(Map<String, dynamic> json) {
     List<SignatureModel> signaturesList = (json['signatures'] as List)
         .map((item) => SignatureModel.fromJson(item))
         .toList();
 
-    return GasSstationModel(
+    return GasStationModel(
       id: json['id'],
       name: json['name'],
       phone: json['phone'],
@@ -55,8 +55,8 @@ class GasSstationModel {
       longitude: json['longitude'],
       active: json['active'] is bool ? json['active'] : false,
       signatures: signaturesList,
-      vehicle: GasSstationVehicleModel.fromJson(json['vehicle']),
-      driver: GasSstationDriverModel.fromJson(json['driver']),
+      vehicle: GasStationVehicleModel.fromJson(json['vehicle']),
+      driver: GasStationDriverModel.fromJson(json['driver']),
     );
   }
 

@@ -5,7 +5,7 @@ import '../../constants/colors.dart';
 import '../../models/gas_station.dart';
 
 class GasStationCard extends StatelessWidget {
-  final GasSstationModel gasStation;
+  final GasStationModel gasStation;
   final LocationData? userLocation;
 
   const GasStationCard(
