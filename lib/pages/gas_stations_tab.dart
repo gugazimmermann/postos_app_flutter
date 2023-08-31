@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/strings.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
+import '../constants/strings.dart';
 import '../providers/app_provider.dart';
 import '../models/gas_station.dart';
 import '../utils/haversine.dart';
@@ -58,7 +58,7 @@ class GasStationsTabState extends State<GasStationsTab>
                   itemBuilder: (context, index) {
                     return Slidable(
                       startActionPane:
-                          slidableToMap(appProvider, gasStations![index]),
+                          slidableToMap(appProvider, gasStations[index]),
                       child: GasStationCard(
                         gasStation: gasStations[index],
                         userLocation:

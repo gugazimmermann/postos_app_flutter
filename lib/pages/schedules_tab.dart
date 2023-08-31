@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:postos_flutter_app/constants/strings.dart';
-import 'package:postos_flutter_app/models/schedule.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/constants.dart';
+import '../constants/strings.dart';
+import '../models/schedule.dart';
 import '../providers/app_provider.dart';
+import '../widgets/schedule/schedule_dialog.dart';
 
 class SchedulesTab extends StatelessWidget {
   const SchedulesTab({Key? key}) : super(key: key);
@@ -30,30 +31,40 @@ class SchedulesTab extends StatelessWidget {
               itemCount: schedules.length,
               itemBuilder: (context, index) {
                 final schedule = schedules[index];
-                return scheduleCard(schedule);
+                return scheduleCard(context, schedule);
               },
             )
           : noSchedules(),
     );
   }
 
-  Card scheduleCard(ScheduleModel schedule) {
+  Card scheduleCard(BuildContext context, ScheduleModel schedule) {
     return Card(
       color: Lists.color,
       elevation: Lists.elevation,
       shape: Lists.shape,
-      child: ListTile(
-        dense: true,
-        contentPadding: Lists.padding,
-        title: Row(
-          children: [
-            scheduleIcon(schedule),
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: scheduleServiceName(schedule),
-            ),
-            scheduleDate(schedule),
-          ],
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ScheduleDialog(schedule: schedule);
+            },
+          );
+        },
+        child: ListTile(
+          dense: true,
+          contentPadding: Lists.padding,
+          title: Row(
+            children: [
+              scheduleIcon(schedule),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: scheduleServiceName(schedule),
+              ),
+              scheduleDate(schedule),
+            ],
+          ),
         ),
       ),
     );
@@ -62,15 +73,15 @@ class SchedulesTab extends StatelessWidget {
   Icon scheduleIcon(ScheduleModel schedule) {
     String iconName;
     Color iconColor;
-    if (schedule.done) {
-      iconName = 'check-bold';
-      iconColor = Colors.blue;
-    } else if (schedule.confirmed) {
+    if (schedule.confirmed) {
       iconName = 'calendar-check';
-      iconColor = Colors.green;
+      iconColor = ColorsConstants.success;
+    } else if (schedule.done) {
+      iconName = 'check-bold';
+      iconColor = ColorsConstants.info;
     } else {
       iconName = 'calendar-clock';
-      iconColor = Colors.grey;
+      iconColor = ColorsConstants.inactive;
     }
     return Icon(
       MdiIcons.fromString(iconName),

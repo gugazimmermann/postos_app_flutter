@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:postos_flutter_app/models/schedule.dart';
 
 import '../constants/strings.dart';
 import '../constants/constants.dart';
 
 import '../models/driver.dart';
+import '../models/schedule.dart';
 import '../models/vehicle.dart';
 import '../models/gas_station.dart';
 

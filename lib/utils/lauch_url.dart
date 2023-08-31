@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../constants/strings.dart';
-import '../widgets/custom_flushbar_error.dart';
-
 void launchMapsUrl(BuildContext context, double lat, double lng, String type) {
   String urlString = '';
   if (type == 'google') {

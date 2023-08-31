@@ -50,4 +50,5 @@ abstract class GasStationStrings {
 abstract class SchedulesStrings {
   static const String errorSchedule = 'Erro ao buscar agendamentos.';
   static const String noSchedule = 'Nenhum Agendamento para mostrar.';
+  static const String title = 'Agendamentos';
 }

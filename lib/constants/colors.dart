@@ -7,6 +7,7 @@ abstract class ColorsConstants {
   static const Color textColor = Color(0xff1e293b);
   static const Color danger = Color(0xffdc2626);
   static const Color success = Color(0xff10b981);
+  static const Color info = Color(0xff0ea5e9);
   static const Color divider = Color(0xff1e293b);
   static const Color inactive = Color(0xff94a3b8);
   static const Color activeTab = Color(0xffd97706);
