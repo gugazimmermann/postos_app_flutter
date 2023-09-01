@@ -9,6 +9,7 @@ class PreferencesHelper {
   static const vehicleDataKey = "vehicle_data";
   static const driverListKey = "driver_list";
   static const vehicleListKey = "vehicle_list";
+  static const unreadNotificationsKey = "unread_notifications";
 
   static Future<SharedPreferences> _getPrefs() async {
     return await SharedPreferences.getInstance();
@@ -45,5 +46,21 @@ class PreferencesHelper {
   static Future<void> removeData(String key) async {
     final prefs = await _getPrefs();
     prefs.remove(key);
+  }
+
+  static Future<int> getNotificationsCount() async {
+    final prefs = await _getPrefs();
+    return prefs.getInt(unreadNotificationsKey) ?? 0;
+  }
+
+  static Future<void> incrementNotificationsCount() async {
+    final prefs = await _getPrefs();
+    int currentCount = prefs.getInt(unreadNotificationsKey) ?? 0;
+    prefs.setInt(unreadNotificationsKey, currentCount + 1);
+  }
+
+  static Future<void> clearNotificationsCount() async {
+    final prefs = await _getPrefs();
+    prefs.remove(unreadNotificationsKey);
   }
 }

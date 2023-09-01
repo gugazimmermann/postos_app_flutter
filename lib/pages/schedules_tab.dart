@@ -45,12 +45,13 @@ class SchedulesTab extends StatelessWidget {
       shape: Lists.shape,
       child: GestureDetector(
         onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ScheduleDialog(schedule: schedule);
-            },
-          );
+          _showNotification(context, schedule);
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return ScheduleDialog(schedule: schedule);
+          //   },
+          // );
         },
         child: ListTile(
           dense: true,
@@ -68,6 +69,14 @@ class SchedulesTab extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _showNotification(BuildContext context, ScheduleModel schedule) {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.notificationProvider.showNotification(
+        id: 1,
+        title: "Touch Sistemas Postos",
+        body: 'Você tem um novo agendamento: ${schedule.scheduleService.name}');
   }
 
   Icon scheduleIcon(ScheduleModel schedule) {

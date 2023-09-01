@@ -1,6 +1,6 @@
 {
-    "name": "postos_flutter_app",
-    "short_name": "postos_flutter_app",
+    "name": "touch_sistemas_postos",
+    "short_name": "touch_sistemas_postos",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

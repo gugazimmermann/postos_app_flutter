@@ -32,6 +32,7 @@ class HomeTabsState extends State<HomeTabs>
     });
 
     var appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.notificationProvider.clearAllUnreadNotifications();
     appProvider.gasStationsProvider.fetchGasStationsData(
         appProvider.signInProvider.selectedVehicle,
         appProvider.signInProvider.selectedDriver);
