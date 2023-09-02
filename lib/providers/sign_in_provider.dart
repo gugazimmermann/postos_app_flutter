@@ -6,7 +6,6 @@ import '../models/driver.dart';
 import '../models/vehicle.dart';
 import '../utils/api_helper.dart';
 import '../utils/is_valid_cpf.dart';
-import '../utils/log.dart';
 import '../utils/shared_preferences.dart';
 
 class SignInProvider with ChangeNotifier {
@@ -45,23 +44,17 @@ class SignInProvider with ChangeNotifier {
       _driverList = (savedDriverList as List)
           .map((driver) => DriverModel.fromJson(driver))
           .toList();
-      logger.t(
-          'Driver List: ${_driverList?.map((driver) => driver.toJson()).toList()}');
     }
     if (savedDriverData != null) {
       _selectedDriver = DriverModel.fromJson(savedDriverData);
-      logger.t('Driver: ${_selectedDriver?.toJson()}');
     }
     if (savedVehiclesList != null) {
       _vehiclesList = (savedVehiclesList as List)
           .map((vehicle) => VehicleModel.fromJson(vehicle))
           .toList();
-      logger.t(
-          'Vehicle List: ${_vehiclesList?.map((vehicle) => vehicle.toJson()).toList()}');
     }
     if (savedVehicleData != null) {
       _selectedVehicle = VehicleModel.fromJson(savedVehicleData);
-      logger.t('Vehicle: ${_selectedVehicle?.toJson()}');
     }
     _isLoading = false;
     notifyListeners();

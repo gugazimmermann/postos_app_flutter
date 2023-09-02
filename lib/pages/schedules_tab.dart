@@ -8,7 +8,7 @@ import '../constants/constants.dart';
 import '../constants/strings.dart';
 import '../models/schedule.dart';
 import '../providers/app_provider.dart';
-import '../widgets/schedule/schedule_dialog.dart';
+import '../widgets/custom_empty_data_card.dart';
 
 class SchedulesTab extends StatelessWidget {
   const SchedulesTab({Key? key}) : super(key: key);
@@ -16,25 +16,32 @@ class SchedulesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
-    final List<ScheduleModel>? schedules =
-        appProvider.schedulesProvider.schedules;
-
-    if (schedules != null && schedules.isNotEmpty) {
-      schedules.sort(
-          (a, b) => DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-    }
-
-    return Padding(
-      padding: Lists.edgeInsets,
-      child: schedules != null && schedules.isNotEmpty
-          ? ListView.builder(
-              itemCount: schedules.length,
-              itemBuilder: (context, index) {
-                final schedule = schedules[index];
-                return scheduleCard(context, schedule);
-              },
-            )
-          : noSchedules(),
+    return ValueListenableBuilder<bool>(
+      valueListenable: appProvider.schedulesProvider.isLoading,
+      builder: (context, isLoading, child) {
+        if (isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          final List<ScheduleModel>? schedules =
+              appProvider.schedulesProvider.schedules;
+          if (schedules == null || schedules.isEmpty) {
+            return const Center(
+                child: EmptyDataCard(text: SchedulesStrings.noSchedule));
+          } else {
+            schedules.sort((a, b) =>
+                DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
+            return Padding(
+                padding: Lists.edgeInsets,
+                child: ListView.builder(
+                  itemCount: schedules.length,
+                  itemBuilder: (context, index) {
+                    final schedule = schedules[index];
+                    return scheduleCard(context, schedule);
+                  },
+                ));
+          }
+        }
+      },
     );
   }
 

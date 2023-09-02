@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import '../constants/constants.dart';
 import '../utils/log.dart';
+import 'location_geofence_provider.dart';
 
 class LocationProvider with ChangeNotifier {
   Location location = Location();
@@ -17,8 +20,13 @@ class LocationProvider with ChangeNotifier {
   LocationData? get currentLocation => _locationData;
   String? get locationError => _locationError;
 
+  late StreamSubscription<GeofenceEventWithId> _geofenceSubscription;
+  GeofenceEventWithId? _lastGeofenceEventWithId;
+  GeofenceEventWithId? get lastGeofenceEventWithId => _lastGeofenceEventWithId;
+
   LocationProvider() {
     _initLocation();
+    _initGeofence();
   }
 
   Future<void> _initLocation() async {
@@ -47,11 +55,46 @@ class LocationProvider with ChangeNotifier {
         }
       }
       _locationData = await location.getLocation();
-      logger.d('location: $_locationData');
     } catch (error) {
       _locationError = "${LocationConstants.error}: $error";
     }
     _isLoadingLocation = false;
     notifyListeners();
+  }
+
+  void _initGeofence() {
+    var geofenceStream = LocationGeofenceProvider.getGeofenceStream();
+    if (geofenceStream != null) {
+      _geofenceSubscription = geofenceStream.listen((eventWithId) {
+        _lastGeofenceEventWithId = eventWithId;
+        notifyListeners();
+      });
+    }
+  }
+
+  void clearAllGeofencePoints() {
+    LocationGeofenceProvider.clearGeofencePoints();
+    logger.d('All geofence points cleared');
+  }
+
+  void addGeofencePoint(
+      String id, double latitude, double longitude, double radius) {
+    logger.d('adicionando posto $id');
+    LocationGeofenceProvider.startGeofenceService(
+        id: id,
+        pointedLatitude: latitude,
+        pointedLongitude: longitude,
+        radiusMeter: radius,
+        eventPeriodInSeconds: 10);
+  }
+
+  Stream<GeofenceEventWithId>? get geofenceStream =>
+      LocationGeofenceProvider.getGeofenceStream();
+
+  @override
+  void dispose() {
+    _geofenceSubscription.cancel();
+    LocationGeofenceProvider.stopGeofenceService();
+    super.dispose();
   }
 }

@@ -1,11 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/app_provider.dart';
+import '../providers/location_geofence_provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/strings.dart';
+
+import '../utils/log.dart';
+
+import '../widgets/gas-station/location_status_map.dart';
 
 import 'gas_stations_tab.dart';
 import 'schedules_tab.dart';
@@ -20,6 +27,7 @@ class HomeTabs extends StatefulWidget {
 class HomeTabsState extends State<HomeTabs>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late StreamSubscription<GeofenceEventWithId> _geofenceSubscription;
 
   @override
   void initState() {
@@ -30,21 +38,33 @@ class HomeTabsState extends State<HomeTabs>
         setState(() {});
       }
     });
+    _loadData();
+  }
 
-    var appProvider = Provider.of<AppProvider>(context, listen: false);
-    appProvider.notificationProvider.clearAllUnreadNotifications();
+  _loadData() {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.gasStationsProvider.fetchGasStationsData(
         appProvider.signInProvider.selectedVehicle,
         appProvider.signInProvider.selectedDriver);
-    appProvider.schedulesProvider.fetchGasStationsData(
+    appProvider.schedulesProvider.fetchSchedulesData(
         appProvider.signInProvider.selectedDriver,
         appProvider.signInProvider.selectedVehicle);
+    appProvider.notificationProvider.clearAllUnreadNotifications();
+    final geofenceStream = appProvider.locationProvider.geofenceStream;
+    if (geofenceStream != null) {
+      _geofenceSubscription = geofenceStream.listen((eventWithId) {
+        if (eventWithId.event == GeofenceEvent.enter) {
+          logger.i('Usuário entrou no posto com ID: ${eventWithId.id}');
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: Stack(children: [
+      Column(
         children: [
           Row(
             children: [
@@ -71,7 +91,8 @@ class HomeTabsState extends State<HomeTabs>
           ),
         ],
       ),
-    );
+      const LocationStatusMap()
+    ]));
   }
 
   Widget _buildTab(
@@ -136,6 +157,7 @@ class HomeTabsState extends State<HomeTabs>
   @override
   void dispose() {
     _tabController.dispose();
+    _geofenceSubscription.cancel();
     super.dispose();
   }
 }

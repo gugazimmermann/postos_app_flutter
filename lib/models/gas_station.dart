@@ -72,8 +72,8 @@ class GasStationModel {
       'longitude': longitude,
       'active': active,
       'signatures': signatures.map((item) => item.toJson()).toList(),
-      'vehicle': vehicle,
-      'driver': driver,
+      'vehicle': vehicle.toJson(),
+      'driver': driver.toJson(),
     };
   }
 }

@@ -7,20 +7,24 @@ import '../utils/api_helper.dart';
 
 class SchedulesProvider with ChangeNotifier {
   final errorNotifier = ValueNotifier<String?>(null);
-  List<ScheduleModel>? _schedules;
-  List<ScheduleModel>? get schedules => _schedules;
+  final isLoading = ValueNotifier<bool>(false);
+  final _schedules = ValueNotifier<List<ScheduleModel>?>(null);
 
-  Future<void> fetchGasStationsData(
+  ValueNotifier<List<ScheduleModel>?> get schedulesNotifier => _schedules;
+  List<ScheduleModel>? get schedules => _schedules.value;
+
+  Future<void> fetchSchedulesData(
       DriverModel? selectedDriver, VehicleModel? selectedVehicle) async {
     if (selectedVehicle != null && selectedDriver != null) {
+      isLoading.value = true;
       var response = await ApiHelper.fetchSchedulesData(
           selectedDriver.company.id, selectedVehicle.id);
       if (response.data != null) {
-        _schedules = response.data!;
-        notifyListeners();
+        _schedules.value = response.data;
       } else {
         errorNotifier.value = response.error?.toString();
       }
+      isLoading.value = false;
     }
   }
 }

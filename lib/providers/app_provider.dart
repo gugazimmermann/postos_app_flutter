@@ -10,16 +10,16 @@ class AppProvider with ChangeNotifier {
   final NotificationProvider _notificationProvider;
   final LocationProvider _locationProvider;
   final SignInProvider _signInProvider;
-  final GasStationsProvider _gasStationsProvider;
+  late GasStationsProvider _gasStationsProvider;
   final SchedulesProvider _schedulesProvider;
 
   AppProvider()
       : _notificationProvider = NotificationProvider(),
         _locationProvider = LocationProvider(),
         _signInProvider = SignInProvider(),
-        _gasStationsProvider = GasStationsProvider(),
         _schedulesProvider = SchedulesProvider() {
     _notificationProvider.initialize();
+    _gasStationsProvider = GasStationsProvider(_locationProvider);
     _locationProvider.addListener(_handleLocationProviderChange);
     _signInProvider.addListener(_handleSignInProviderChange);
     _gasStationsProvider.addListener(_handleGasStationsProviderChange);
