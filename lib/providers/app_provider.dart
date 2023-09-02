@@ -10,20 +10,25 @@ class AppProvider with ChangeNotifier {
   final NotificationProvider _notificationProvider;
   final LocationProvider _locationProvider;
   final SignInProvider _signInProvider;
-  late GasStationsProvider _gasStationsProvider;
   final SchedulesProvider _schedulesProvider;
+  late GasStationsProvider _gasStationsProvider;
 
   AppProvider()
       : _notificationProvider = NotificationProvider(),
         _locationProvider = LocationProvider(),
         _signInProvider = SignInProvider(),
         _schedulesProvider = SchedulesProvider() {
-    _notificationProvider.initialize();
-    _gasStationsProvider = GasStationsProvider(_locationProvider);
+    _initializePermissions();
     _locationProvider.addListener(_handleLocationProviderChange);
     _signInProvider.addListener(_handleSignInProviderChange);
-    _gasStationsProvider.addListener(_handleGasStationsProviderChange);
     _schedulesProvider.addListener(_handleSchedulesProviderChange);
+    _gasStationsProvider = GasStationsProvider(_locationProvider);
+    _gasStationsProvider.addListener(_handleGasStationsProviderChange);
+  }
+
+  Future<void> _initializePermissions() async {
+    await _notificationProvider.initialize();
+    await _locationProvider.initialize();
   }
 
   void _handleSignInProviderChange() {

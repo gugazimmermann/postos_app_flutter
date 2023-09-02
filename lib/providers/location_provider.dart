@@ -24,12 +24,14 @@ class LocationProvider with ChangeNotifier {
   GeofenceEventWithId? _lastGeofenceEventWithId;
   GeofenceEventWithId? get lastGeofenceEventWithId => _lastGeofenceEventWithId;
 
-  LocationProvider() {
-    _initLocation();
-    _initGeofence();
+  Future<void> initialize() async {
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+    }
   }
 
-  Future<void> _initLocation() async {
+  Future<void> getUserLocation() async {
     _isLoadingLocation = true;
     notifyListeners();
     try {
@@ -62,7 +64,7 @@ class LocationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _initGeofence() {
+  void initGeofence() {
     var geofenceStream = LocationGeofenceProvider.getGeofenceStream();
     if (geofenceStream != null) {
       _geofenceSubscription = geofenceStream.listen((eventWithId) {

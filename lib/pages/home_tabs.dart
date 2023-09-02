@@ -38,11 +38,13 @@ class HomeTabsState extends State<HomeTabs>
         setState(() {});
       }
     });
-    _loadData();
+    Future.delayed(Duration.zero, _loadData);
   }
 
   _loadData() {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.locationProvider.getUserLocation();
+    appProvider.locationProvider.initGeofence();
     appProvider.gasStationsProvider.fetchGasStationsData(
         appProvider.signInProvider.selectedVehicle,
         appProvider.signInProvider.selectedDriver);
