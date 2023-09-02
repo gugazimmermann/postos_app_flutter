@@ -109,7 +109,7 @@ class LocationStatusMapState extends State<LocationStatusMap>
   void _setGeofences(AppProvider appProvider) {
     final List<GasStationModel>? gasStations =
         appProvider.gasStationsProvider.gasStations;
-    if (gasStations != null || gasStations!.isEmpty) {
+    if (gasStations != null && gasStations.isEmpty) {
       appProvider.locationProvider.clearAllGeofencePoints();
       for (var gasStation in gasStations) {
         appProvider.locationProvider.addGeofencePoint(gasStation.id,
