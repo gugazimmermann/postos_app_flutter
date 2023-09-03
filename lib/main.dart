@@ -18,10 +18,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   Widget _buildDestinationWidget(AppProvider appProvider) {
-    if (appProvider.signInProvider.selectedDriver != null &&
-        appProvider.signInProvider.driverList != null &&
-        appProvider.signInProvider.selectedVehicle != null &&
-        appProvider.signInProvider.vehiclesList != null) {
+    if (appProvider.signInProvider.isUserConnected) {
       return const HomeTabs();
     } else {
       return const SignIn();
@@ -45,11 +42,7 @@ class MyApp extends StatelessWidget {
           ),
           home: Scaffold(
             appBar: CustomAppBar(
-              isUserConnected:
-                  appProvider.signInProvider.selectedDriver != null &&
-                      appProvider.signInProvider.driverList != null &&
-                      appProvider.signInProvider.selectedVehicle != null &&
-                      appProvider.signInProvider.vehiclesList != null,
+              isUserConnected: appProvider.signInProvider.isUserConnected,
             ),
             body: _buildDestinationWidget(appProvider),
           ),

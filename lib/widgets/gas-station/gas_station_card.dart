@@ -71,7 +71,7 @@ class GasStationCard extends StatelessWidget {
                         fontSize: 16.0,
                       ),
                     ),
-                    if (userLocation != null)
+                    if (userLocation != null && gasStation.distance != null)
                       Text(
                         '${gasStation.distance?.toStringAsFixed(2)} km',
                         style: const TextStyle(

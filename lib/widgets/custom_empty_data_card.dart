@@ -26,7 +26,7 @@ class EmptyDataCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ColorsConstants.danger,
+                color: ColorsConstants.inactive,
               ),
             ),
           ),

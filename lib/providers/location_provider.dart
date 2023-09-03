@@ -8,7 +8,6 @@ import 'package:location/location.dart';
 import '../constants/constants.dart';
 import '../utils/geofencing.dart';
 import '../utils/shared_preferences.dart';
-import '../utils/log.dart';
 
 class LocationProvider with ChangeNotifier {
   Location location = Location();
@@ -102,14 +101,11 @@ class LocationProvider with ChangeNotifier {
 
   void clearAllGeofencePoints() {
     _geofencePoints.clear();
-    logger.i("All geofence points cleared");
   }
 
   void addGeofencePoint(
       String id, double latitude, double longitude, double radius) {
     _geofencePoints[id] = GeofencePoint(latitude, longitude, radius);
-    logger.i(
-        "Added geofence point for ID: $id at ($latitude, $longitude) with radius: $radius meters.");
   }
 
   void _checkGeofence(LatLng currentPosition) {
@@ -118,7 +114,6 @@ class LocationProvider with ChangeNotifier {
       double distanceInMeters = distance.distance(
           LatLng(_geofencePoints[id]!.latitude, _geofencePoints[id]!.longitude),
           currentPosition);
-      logger.i("checkGeofence distance: $distanceInMeters");
       if (distanceInMeters <= _geofencePoints[id]!.radius) {
         _geofenceController.add(GeofenceEventWithId(GeofenceEvent.enter, id));
       }

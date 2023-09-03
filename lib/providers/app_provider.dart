@@ -56,6 +56,14 @@ class AppProvider with ChangeNotifier {
     super.dispose();
   }
 
+  Future<void> updateGasStationsAndSchedules() async {
+    await gasStationsProvider.fetchGasStationsData(
+        signInProvider.selectedVehicle, signInProvider.selectedDriver);
+    await schedulesProvider.fetchSchedulesData(
+        signInProvider.selectedDriver, signInProvider.selectedVehicle);
+    gasStationsProvider.onLocationChanged();
+  }
+
   NotificationProvider get notificationProvider => _notificationProvider;
   LocationProvider get locationProvider => _locationProvider;
   SignInProvider get signInProvider => _signInProvider;

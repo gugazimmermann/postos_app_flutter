@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../constants/colors.dart';
 import '../constants/strings.dart';
-
-import '../providers/app_provider.dart';
+import 'config/user_dialog.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isUserConnected;
@@ -15,28 +13,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isUserConnected = false,
   });
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text("Sair"),
-        content: const Text("Você deseja sair?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text("Cancelar"),
-          ),
-          TextButton(
-            onPressed: () {
-              final appProvider =
-                  Provider.of<AppProvider>(context, listen: false);
-              appProvider.signInProvider.resetSelection();
-              Navigator.of(dialogContext).pop();
-            },
-            child: const Text("Sair"),
-          ),
-        ],
-      ),
+      builder: (dialogContext) => UserDialog(dialogContext),
     );
   }
 
@@ -70,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 size: 36.0,
                 color: ColorsConstants.textColor,
               ),
-              onPressed: () => _showLogoutDialog(context),
+              onPressed: () => _showDialog(context),
             ),
           ),
       ],

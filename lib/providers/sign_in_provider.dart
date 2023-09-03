@@ -16,11 +16,13 @@ class SignInProvider with ChangeNotifier {
   DriverModel? _selectedDriver;
   List<VehicleModel>? _vehiclesList;
   VehicleModel? _selectedVehicle;
+  bool _isUserConnected = false;
 
   List<DriverModel>? get driverList => _driverList;
   DriverModel? get selectedDriver => _selectedDriver;
   List<VehicleModel>? get vehiclesList => _vehiclesList;
   VehicleModel? get selectedVehicle => _selectedVehicle;
+  bool get isUserConnected => _isUserConnected;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -56,6 +58,10 @@ class SignInProvider with ChangeNotifier {
     if (savedVehicleData != null) {
       _selectedVehicle = VehicleModel.fromJson(savedVehicleData);
     }
+    _isUserConnected = savedDriverList != null &&
+        savedDriverData != null &&
+        savedVehicleData != null &&
+        savedDriverList != null;
     _isLoading = false;
     notifyListeners();
   }
@@ -74,6 +80,7 @@ class SignInProvider with ChangeNotifier {
     _selectedVehicle = null;
     cpfController.clear();
     _resetPreferences();
+    _isUserConnected = false;
     notifyListeners();
   }
 
@@ -128,6 +135,14 @@ class SignInProvider with ChangeNotifier {
     _selectedVehicle = vehicle;
     await PreferencesHelper.saveData(
         PreferencesHelper.vehicleDataKey, _selectedVehicle);
+    _isUserConnected = true;
     notifyListeners();
+  }
+
+  Future<void> removeVehicles() async {
+    _selectedVehicle = null;
+    _vehiclesList = null;
+    await PreferencesHelper.removeData(PreferencesHelper.vehicleDataKey);
+    await PreferencesHelper.removeData(PreferencesHelper.vehicleListKey);
   }
 }

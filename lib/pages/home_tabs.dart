@@ -46,18 +46,12 @@ class HomeTabsState extends State<HomeTabs>
     final appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.locationProvider.getUserLocation();
     appProvider.locationProvider.initGeofence();
-    appProvider.gasStationsProvider.fetchGasStationsData(
-        appProvider.signInProvider.selectedVehicle,
-        appProvider.signInProvider.selectedDriver);
-    appProvider.schedulesProvider.fetchSchedulesData(
-        appProvider.signInProvider.selectedDriver,
-        appProvider.signInProvider.selectedVehicle);
+    appProvider.updateGasStationsAndSchedules();
     appProvider.notificationProvider.clearAllUnreadNotifications();
     final geofenceStream = appProvider.locationProvider.geofenceStream;
     if (geofenceStream != null) {
       _geofenceSubscription = geofenceStream.listen((eventWithId) {
         if (eventWithId.event == GeofenceEvent.enter) {
-          logger.w("GeofenceEvent.enter ${eventWithId.event}");
           _showNotification(context, eventWithId.id);
         }
       });

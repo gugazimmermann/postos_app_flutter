@@ -18,7 +18,7 @@ class GasStationsProvider with ChangeNotifier {
   final LocationProvider _locationProvider;
 
   GasStationsProvider(this._locationProvider) {
-    _locationProvider.addListener(_onLocationChanged);
+    _locationProvider.addListener(onLocationChanged);
   }
 
   Future<void> fetchGasStationsData(
@@ -37,7 +37,7 @@ class GasStationsProvider with ChangeNotifier {
     }
   }
 
-  void _onLocationChanged() {
+  void onLocationChanged() {
     if (_gasStations != null && _locationProvider.currentLocation != null) {
       for (var gasStation in _gasStations!) {
         const distance = Distance();
@@ -54,7 +54,7 @@ class GasStationsProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    _locationProvider.removeListener(_onLocationChanged);
+    _locationProvider.removeListener(onLocationChanged);
     super.dispose();
   }
 }

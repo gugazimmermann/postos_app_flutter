@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../constants/constants.dart';
 import '../widgets/custom_flushbar_error.dart';
 
 void launchMapsUrl(BuildContext context, double lat, double lng, String type) {
@@ -23,6 +24,7 @@ void _tryToLaunchUrl(BuildContext context, Uri url) async {
   if (await canLaunchUrl(url)) {
     launchUrl(url);
   } else {
-    customFlushBarError('Aplicativo não instalado!', context);
+    // ignore: use_build_context_synchronously
+    customFlushBarError(ApiConstants.noApp, context);
   }
 }
