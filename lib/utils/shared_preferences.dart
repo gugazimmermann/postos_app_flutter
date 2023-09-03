@@ -63,4 +63,18 @@ class PreferencesHelper {
     final prefs = await _getPrefs();
     prefs.remove(unreadNotificationsKey);
   }
+
+  static Future<void> saveLastGasStationNotificationTimestamp(
+      String gasStationID, int timestamp) async {
+    final prefs = await _getPrefs();
+    final key = 'lastGasStationNotifiedAt_$gasStationID';
+    prefs.setInt(key, timestamp);
+  }
+
+  static Future<int?> getLastGasStationNotificationTimestamp(
+      String gasStationID) async {
+    final prefs = await _getPrefs();
+    final key = 'lastGasStationNotifiedAt_$gasStationID';
+    return prefs.getInt(key);
+  }
 }

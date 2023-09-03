@@ -9,6 +9,7 @@ import '../constants/strings.dart';
 import '../models/schedule.dart';
 import '../providers/app_provider.dart';
 import '../widgets/custom_empty_data_card.dart';
+import '../widgets/schedule/schedule_dialog.dart';
 
 class SchedulesTab extends StatelessWidget {
   const SchedulesTab({Key? key}) : super(key: key);
@@ -52,13 +53,12 @@ class SchedulesTab extends StatelessWidget {
       shape: Lists.shape,
       child: GestureDetector(
         onTap: () {
-          _showNotification(context, schedule);
-          // showDialog(
-          //   context: context,
-          //   builder: (BuildContext context) {
-          //     return ScheduleDialog(schedule: schedule);
-          //   },
-          // );
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ScheduleDialog(schedule: schedule);
+            },
+          );
         },
         child: ListTile(
           dense: true,
@@ -76,14 +76,6 @@ class SchedulesTab extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showNotification(BuildContext context, ScheduleModel schedule) {
-    final appProvider = Provider.of<AppProvider>(context, listen: false);
-    appProvider.notificationProvider.showNotification(
-        id: 1,
-        title: "Touch Sistemas Postos",
-        body: 'Você tem um novo agendamento: ${schedule.scheduleService.name}');
   }
 
   Icon scheduleIcon(ScheduleModel schedule) {

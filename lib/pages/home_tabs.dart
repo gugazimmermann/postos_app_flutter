@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../models/gas_station.dart';
 import '../providers/app_provider.dart';
 import '../providers/location_geofence_provider.dart';
 
@@ -12,6 +13,7 @@ import '../constants/strings.dart';
 
 import '../utils/log.dart';
 
+import '../utils/shared_preferences.dart';
 import '../widgets/gas-station/location_status_map.dart';
 
 import 'gas_stations_tab.dart';
@@ -56,9 +58,42 @@ class HomeTabsState extends State<HomeTabs>
     if (geofenceStream != null) {
       _geofenceSubscription = geofenceStream.listen((eventWithId) {
         if (eventWithId.event == GeofenceEvent.enter) {
-          logger.i('Usuário entrou no posto com ID: ${eventWithId.id}');
+          _showNotification(context, eventWithId.id);
         }
       });
+    }
+  }
+
+  Future<void> _showNotification(
+      BuildContext context, String gasStationID) async {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    final gasStations = appProvider.gasStationsProvider.gasStations;
+    GasStationModel? targetGasStation;
+    try {
+      targetGasStation = gasStations
+          ?.firstWhere((gasStation) => gasStation.id == gasStationID);
+    } catch (e) {
+      logger.e('Gas station with ID $gasStationID not found.');
+    }
+    if (targetGasStation != null) {
+      final lastNotifiedAt =
+          await PreferencesHelper.getLastGasStationNotificationTimestamp(
+              gasStationID);
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      const sixHoursInMillis = 6 * 60 * 60 * 1000;
+      if (lastNotifiedAt == null ||
+          (currentTime - lastNotifiedAt > sixHoursInMillis)) {
+        final fuelTypes = targetGasStation.vehicle.fuelTypes;
+        if (fuelTypes.isNotEmpty) {
+          final fuelTypeNames = fuelTypes.map((type) => type.name).join(', ');
+          appProvider.notificationProvider.showNotification(
+              id: 1,
+              title: targetGasStation.name,
+              body: 'Restrição de combustível: $fuelTypeNames');
+          PreferencesHelper.saveLastGasStationNotificationTimestamp(
+              gasStationID, currentTime);
+        }
+      }
     }
   }
 

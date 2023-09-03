@@ -3,8 +3,6 @@ library geofence_touch_sitemas;
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
-import '../utils/log.dart';
-
 enum GeofenceEvent { init, enter, exit }
 
 class LocationGeofenceProvider {
@@ -36,7 +34,7 @@ class LocationGeofenceProvider {
     if (_positionStream == null) {
       _positionStream = Geolocator.getPositionStream(
               locationSettings:
-                  const LocationSettings(accuracy: LocationAccuracy.best))
+                  const LocationSettings(accuracy: LocationAccuracy.high))
           .listen((Position? position) {
         if (position != null) {
           _checkGeofence(position);
@@ -59,9 +57,7 @@ class LocationGeofenceProvider {
           _geofencePoints[id]!.longitude,
           position.latitude,
           position.longitude);
-
       if (distanceInMeters <= _geofencePoints[id]!.radius) {
-        logger.i("Dentro do geofencing para o ponto $id");
         _controller.add(GeofenceEventWithId(GeofenceEvent.enter, id));
       }
     }

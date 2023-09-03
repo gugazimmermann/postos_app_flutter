@@ -19,6 +19,7 @@ class LocationStatusMap extends StatefulWidget {
 class LocationStatusMapState extends State<LocationStatusMap>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  List<GasStationModel>? _previousGasStations;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class LocationStatusMapState extends State<LocationStatusMap>
     } else if (locationError != null) {
       widgets.add(errorLocation(locationError, context));
     } else if (userLocation != null) {
-      _setGeofences(appProvider);
+      _setGeofences(appProvider, appProvider.gasStationsProvider.gasStations);
       widgets.add(
           mapButton(userLocation, appProvider.gasStationsProvider.gasStations));
     }
@@ -106,16 +107,26 @@ class LocationStatusMapState extends State<LocationStatusMap>
     );
   }
 
-  void _setGeofences(AppProvider appProvider) {
-    final List<GasStationModel>? gasStations =
-        appProvider.gasStationsProvider.gasStations;
-    if (gasStations != null && gasStations.isEmpty) {
-      appProvider.locationProvider.clearAllGeofencePoints();
+  void _setGeofences(
+      AppProvider appProvider, List<GasStationModel>? gasStations) {
+    if (listsAreEqual(_previousGasStations, gasStations)) return;
+    appProvider.locationProvider.clearAllGeofencePoints();
+    if (gasStations != null && gasStations.isNotEmpty) {
       for (var gasStation in gasStations) {
         appProvider.locationProvider.addGeofencePoint(gasStation.id,
-            gasStation.latitudeAsDouble, gasStation.longitudeAsDouble, 50);
+            gasStation.latitudeAsDouble, gasStation.longitudeAsDouble, 60);
       }
     }
+    _previousGasStations = gasStations;
+  }
+
+  bool listsAreEqual(List<GasStationModel>? a, List<GasStationModel>? b) {
+    if (a == null || b == null) return a == b;
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i].id != b[i].id) return false;
+    }
+    return true;
   }
 
   @override

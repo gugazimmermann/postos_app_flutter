@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import '../constants/constants.dart';
-import '../utils/log.dart';
 import 'location_geofence_provider.dart';
 
 class LocationProvider with ChangeNotifier {
@@ -76,12 +75,10 @@ class LocationProvider with ChangeNotifier {
 
   void clearAllGeofencePoints() {
     LocationGeofenceProvider.clearGeofencePoints();
-    logger.d('All geofence points cleared');
   }
 
   void addGeofencePoint(
       String id, double latitude, double longitude, double radius) {
-    logger.d('adicionando posto $id');
     LocationGeofenceProvider.startGeofenceService(
         id: id,
         pointedLatitude: latitude,
