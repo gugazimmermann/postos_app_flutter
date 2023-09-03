@@ -84,7 +84,7 @@ class LocationProvider with ChangeNotifier {
         pointedLatitude: latitude,
         pointedLongitude: longitude,
         radiusMeter: radius,
-        eventPeriodInSeconds: 10);
+        eventPeriodInSeconds: 60);
   }
 
   Stream<GeofenceEventWithId>? get geofenceStream =>

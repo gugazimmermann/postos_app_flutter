@@ -114,7 +114,7 @@ class LocationStatusMapState extends State<LocationStatusMap>
     if (gasStations != null && gasStations.isNotEmpty) {
       for (var gasStation in gasStations) {
         appProvider.locationProvider.addGeofencePoint(gasStation.id,
-            gasStation.latitudeAsDouble, gasStation.longitudeAsDouble, 60);
+            gasStation.latitudeAsDouble, gasStation.longitudeAsDouble, 10);
       }
     }
     _previousGasStations = gasStations;
