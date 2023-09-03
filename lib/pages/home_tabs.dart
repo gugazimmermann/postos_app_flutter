@@ -62,6 +62,8 @@ class HomeTabsState extends State<HomeTabs>
       BuildContext context, String gasStationID) async {
     final appProvider = Provider.of<AppProvider>(context, listen: false);
     final gasStations = appProvider.gasStationsProvider.gasStations;
+    final vehicle = appProvider.signInProvider.selectedVehicle;
+
     GasStationModel? targetGasStation;
     try {
       targetGasStation = gasStations
@@ -72,7 +74,7 @@ class HomeTabsState extends State<HomeTabs>
     if (targetGasStation != null) {
       final lastNotifiedAt =
           await PreferencesHelper.getLastGasStationNotificationTimestamp(
-              gasStationID);
+              gasStationID, vehicle!.plate);
       final currentTime = DateTime.now().millisecondsSinceEpoch;
       const sixHoursInMillis = 6 * 60 * 60 * 1000;
       if (lastNotifiedAt == null ||
@@ -85,7 +87,7 @@ class HomeTabsState extends State<HomeTabs>
               title: targetGasStation.name,
               body: 'Restrição de combustível: $fuelTypeNames');
           PreferencesHelper.saveLastGasStationNotificationTimestamp(
-              gasStationID, currentTime);
+              gasStationID, vehicle.plate, currentTime);
         }
       }
     }
