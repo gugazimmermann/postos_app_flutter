@@ -51,6 +51,8 @@
 		<string>Touch Sistemas Postos precisa acessar a localização.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>Touch Sistemas Postos precisa acessar a localização em segundo plano.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Touch Sistemas Postos precisa acessar a localização em segundo plano.</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>tel</string>
