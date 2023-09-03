@@ -16,8 +16,35 @@ import '../widgets/custom_button.dart';
 
 import 'home_tabs.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
+
+  @override
+  SignInState createState() => SignInState();
+}
+
+class SignInState extends State<SignIn> with WidgetsBindingObserver {
+  bool isKeyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    setState(() {
+      isKeyboardVisible = bottomInset > 0.0;
+    });
+  }
 
   List<Widget> _buildDriverDocument(
       AppProvider appProvider, BuildContext context) {
@@ -144,12 +171,13 @@ class SignIn extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Stack(
                   children: [
-                    const WelcomeContainer(),
+                    WelcomeContainer(isKeyboardVisible: isKeyboardVisible),
                     if (appProvider.signInProvider.isLoading)
                       const Center(child: CircularProgressIndicator()),
                     if (!appProvider.signInProvider.isLoading)
                       SingleChildScrollView(
-                        padding: const EdgeInsets.only(top: 300),
+                        padding:
+                            EdgeInsets.only(top: isKeyboardVisible ? 150 : 300),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
