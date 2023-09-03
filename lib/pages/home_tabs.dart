@@ -95,6 +95,9 @@ class HomeTabsState extends State<HomeTabs>
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<AppProvider>(context);
+    final vehicle = appProvider.signInProvider.selectedVehicle;
+
     return Scaffold(
         body: Stack(children: [
       Column(
@@ -113,6 +116,13 @@ class HomeTabsState extends State<HomeTabs>
               ),
             ],
           ),
+          const SizedBox(height: 4.0),
+          Text(vehicle != null ? vehicle.plate : "",
+              style: const TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+                color: ColorsConstants.textColor,
+              )),
           Expanded(
             child: TabBarView(
               controller: _tabController,

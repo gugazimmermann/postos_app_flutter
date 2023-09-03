@@ -31,15 +31,13 @@ class SchedulesTab extends StatelessWidget {
           } else {
             schedules.sort((a, b) =>
                 DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
-            return Padding(
-                padding: Lists.edgeInsets,
-                child: ListView.builder(
-                  itemCount: schedules.length,
-                  itemBuilder: (context, index) {
-                    final schedule = schedules[index];
-                    return scheduleCard(context, schedule);
-                  },
-                ));
+            return ListView.builder(
+              itemCount: schedules.length,
+              itemBuilder: (context, index) {
+                final schedule = schedules[index];
+                return scheduleCard(context, schedule);
+              },
+            );
           }
         }
       },
