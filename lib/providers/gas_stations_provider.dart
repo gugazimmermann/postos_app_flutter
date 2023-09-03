@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'location_provider.dart';
 
@@ -7,7 +8,6 @@ import '../models/gas_station.dart';
 import '../models/vehicle.dart';
 
 import '../utils/api_helper.dart';
-import '../utils/haversine.dart';
 
 class GasStationsProvider with ChangeNotifier {
   final errorNotifier = ValueNotifier<String?>(null);
@@ -40,12 +40,12 @@ class GasStationsProvider with ChangeNotifier {
   void _onLocationChanged() {
     if (_gasStations != null && _locationProvider.currentLocation != null) {
       for (var gasStation in _gasStations!) {
-        gasStation.distance = haversineDistance(
-          _locationProvider.currentLocation!.latitude!,
-          _locationProvider.currentLocation!.longitude!,
-          gasStation.latitudeAsDouble,
-          gasStation.longitudeAsDouble,
-        );
+        const distance = Distance();
+        var distanceInMeters = distance.distance(
+            LatLng(_locationProvider.currentLocation!.latitude!,
+                _locationProvider.currentLocation!.longitude!),
+            LatLng(gasStation.latitudeAsDouble, gasStation.longitudeAsDouble));
+        gasStation.distance = distanceInMeters / 1000;
       }
       _gasStations!.sort((a, b) => a.distance!.compareTo(b.distance!));
     }

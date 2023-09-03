@@ -10,6 +10,7 @@ class PreferencesHelper {
   static const driverListKey = "driver_list";
   static const vehicleListKey = "vehicle_list";
   static const unreadNotificationsKey = "unread_notifications";
+  static const backgroundLocationDeniedKey = "background_location_denied";
 
   static Future<SharedPreferences> _getPrefs() async {
     return await SharedPreferences.getInstance();
@@ -76,5 +77,15 @@ class PreferencesHelper {
     final prefs = await _getPrefs();
     final key = 'lastGasStationNotifiedAt_$gasStationID';
     return prefs.getInt(key);
+  }
+
+  static Future<void> setBackgroundLocationDenied(bool value) async {
+    final prefs = await _getPrefs();
+    prefs.setBool(backgroundLocationDeniedKey, value);
+  }
+
+  static Future<bool?> getBackgroundLocationDenied() async {
+    final prefs = await _getPrefs();
+    return prefs.getBool(backgroundLocationDeniedKey);
   }
 }

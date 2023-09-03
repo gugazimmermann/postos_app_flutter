@@ -6,14 +6,13 @@ import 'package:provider/provider.dart';
 
 import '../models/gas_station.dart';
 import '../providers/app_provider.dart';
-import '../providers/location_geofence_provider.dart';
+import '../utils/geofencing.dart';
+import '../utils/shared_preferences.dart';
+import '../utils/log.dart';
 
 import '../constants/colors.dart';
 import '../constants/strings.dart';
 
-import '../utils/log.dart';
-
-import '../utils/shared_preferences.dart';
 import '../widgets/gas-station/location_status_map.dart';
 
 import 'gas_stations_tab.dart';
@@ -58,6 +57,7 @@ class HomeTabsState extends State<HomeTabs>
     if (geofenceStream != null) {
       _geofenceSubscription = geofenceStream.listen((eventWithId) {
         if (eventWithId.event == GeofenceEvent.enter) {
+          logger.w("GeofenceEvent.enter ${eventWithId.event}");
           _showNotification(context, eventWithId.id);
         }
       });
