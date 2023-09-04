@@ -37,9 +37,7 @@ class HomeTabsState extends State<HomeTabs>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {});
-      }
+      setState(() {});
     });
     Future.delayed(Duration.zero, _loadData);
   }
