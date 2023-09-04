@@ -3,10 +3,11 @@ import 'package:location/location.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/colors.dart';
-import '../../models/gas_station.dart';
-import '../../pages/gas_stations_map.dart';
 import '../../providers/app_provider.dart';
+import '../../models/gas_station.dart';
+
+import '../../constants/colors.dart';
+import '../../pages/gas_stations_map.dart';
 import '../custom_flushbar_error.dart';
 
 class LocationStatusMap extends StatefulWidget {
@@ -37,7 +38,8 @@ class LocationStatusMapState extends State<LocationStatusMap>
   }
 
   List<Widget> buildLocationWidgets(AppProvider appProvider) {
-    final isLoadingLocation = appProvider.locationProvider.isLoadingLocation;
+    final isLoadingLocation = appProvider.locationProvider.isLoadingLocation &&
+        appProvider.locationProvider.currentLocation == null;
     final locationError = appProvider.locationProvider.locationError;
     final userLocation = appProvider.locationProvider.currentLocation;
 

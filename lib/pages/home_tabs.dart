@@ -15,7 +15,7 @@ import '../constants/colors.dart';
 import '../constants/strings.dart';
 import '../constants/constants.dart';
 
-import '../widgets/gas-station/location_status_map.dart';
+import '../widgets/home/location_status_map.dart';
 
 import 'gas_stations_tab.dart';
 import 'schedules_tab.dart';

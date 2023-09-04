@@ -8,9 +8,9 @@ import '../providers/app_provider.dart';
 import '../constants/colors.dart';
 import '../constants/strings.dart';
 
+import '../widgets/sign-in/welcome_container.dart';
 import '../widgets/forms/custom_input.dart';
 import '../widgets/forms/custom_dropdown.dart';
-import '../widgets/home/welcome_container.dart';
 import '../widgets/custom_flushbar_error.dart';
 import '../widgets/custom_button.dart';
 
