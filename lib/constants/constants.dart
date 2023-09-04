@@ -19,7 +19,7 @@ abstract class LocationConstants {
 
 abstract class Lists {
   static const EdgeInsets edgeInsets =
-      EdgeInsets.symmetric(horizontal: 4.0, vertical: 16.0);
+      EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0);
   static const Color color = ColorsConstants.cardWhite;
   static const double elevation = 2.0;
   static RoundedRectangleBorder shape =

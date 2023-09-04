@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../models/gas_station.dart';
 import '../providers/app_provider.dart';
+import '../models/gas_station.dart';
+
 import '../utils/geofencing.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/log.dart';
 
 import '../constants/colors.dart';
 import '../constants/strings.dart';
+import '../constants/constants.dart';
 
 import '../widgets/gas-station/location_status_map.dart';
 
@@ -116,7 +118,7 @@ class HomeTabsState extends State<HomeTabs>
               ),
             ],
           ),
-          const SizedBox(height: 4.0),
+          const SizedBox(height: 12.0),
           Text(vehicle != null ? vehicle.plate : "",
               style: const TextStyle(
                 fontSize: 21,
@@ -124,13 +126,15 @@ class HomeTabsState extends State<HomeTabs>
                 color: ColorsConstants.textColor,
               )),
           Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                GasStationsTab(),
-                SchedulesTab(),
-              ],
-            ),
+            child: Padding(
+                padding: Lists.edgeInsets,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    GasStationsTab(),
+                    SchedulesTab(),
+                  ],
+                )),
           ),
         ],
       ),
