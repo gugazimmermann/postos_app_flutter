@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'firebase_options.dart';
 import 'providers/app_provider.dart';
 
 import 'constants/strings.dart';
@@ -12,7 +15,15 @@ import 'widgets/custom_app_bar.dart';
 import 'pages/sign_in.dart';
 import 'pages/home_tabs.dart';
 
-void main() => runApp(const MyApp());
+import 'utils/log.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -25,8 +36,15 @@ class MyApp extends StatelessWidget {
     }
   }
 
+  void _handleFirebaseMessagingToken(BuildContext context) async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    await FirebaseMessaging.instance.setAutoInitEnabled(true);
+    logger.d("FCMToken $fcmToken");
+  }
+
   @override
   Widget build(BuildContext context) {
+    _handleFirebaseMessagingToken(context);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: ColorsConstants.primaryColor,
     ));

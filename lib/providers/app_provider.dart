@@ -5,21 +5,24 @@ import 'location_provider.dart';
 import 'sign_in_provider.dart';
 import 'gas_stations_provider.dart';
 import 'schedules_provider.dart';
+import 'analytics_provider.dart';
 
 class AppProvider with ChangeNotifier {
   final NotificationProvider _notificationProvider;
   final LocationProvider _locationProvider;
-  final SignInProvider _signInProvider;
+  final AnalyticsProvider _analyticsProvider;
+  late SignInProvider _signInProvider;
   final SchedulesProvider _schedulesProvider;
   late GasStationsProvider _gasStationsProvider;
 
   AppProvider()
       : _notificationProvider = NotificationProvider(),
         _locationProvider = LocationProvider(),
-        _signInProvider = SignInProvider(),
-        _schedulesProvider = SchedulesProvider() {
+        _schedulesProvider = SchedulesProvider(),
+        _analyticsProvider = AnalyticsProvider() {
     _initializePermissions();
     _locationProvider.addListener(_handleLocationProviderChange);
+    _signInProvider = SignInProvider(_analyticsProvider);
     _signInProvider.addListener(_handleSignInProviderChange);
     _schedulesProvider.addListener(_handleSchedulesProviderChange);
     _gasStationsProvider = GasStationsProvider(_locationProvider);
@@ -69,4 +72,5 @@ class AppProvider with ChangeNotifier {
   SignInProvider get signInProvider => _signInProvider;
   GasStationsProvider get gasStationsProvider => _gasStationsProvider;
   SchedulesProvider get schedulesProvider => _schedulesProvider;
+  AnalyticsProvider get analyticsProvider => _analyticsProvider;
 }

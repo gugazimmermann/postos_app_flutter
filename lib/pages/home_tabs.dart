@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ import '../constants/constants.dart';
 
 import '../widgets/home/location_status_map.dart';
 
+import '../widgets/home/notification_dialog.dart';
 import 'gas_stations_tab.dart';
 import 'schedules_tab.dart';
 
@@ -39,7 +41,21 @@ class HomeTabsState extends State<HomeTabs>
     _tabController.addListener(() {
       setState(() {});
     });
+    Future.delayed(Duration.zero, _handleMessages);
     Future.delayed(Duration.zero, _loadData);
+  }
+
+  _handleMessages() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return NotificationDialog(message: message);
+          },
+        );
+      }
+    });
   }
 
   _loadData() {

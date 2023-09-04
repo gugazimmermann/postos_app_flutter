@@ -3,6 +3,7 @@ import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../constants/colors.dart';
+
 import '../utils/shared_preferences.dart';
 
 class NotificationProvider {

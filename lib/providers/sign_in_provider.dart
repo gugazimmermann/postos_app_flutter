@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:touch_sistemas_postos/providers/analytics_provider.dart';
 
-import '../constants/strings.dart';
 import '../models/driver.dart';
 import '../models/vehicle.dart';
+
+import '../constants/strings.dart';
+
 import '../utils/api_helper.dart';
 import '../utils/is_valid_cpf.dart';
 import '../utils/shared_preferences.dart';
 
 class SignInProvider with ChangeNotifier {
+  final AnalyticsProvider _analyticsProvider;
+
   final cpfController = MaskedTextController(mask: '000.000.000-00');
   final errorNotifier = ValueNotifier<String?>(null);
 
@@ -27,7 +32,7 @@ class SignInProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  SignInProvider() {
+  SignInProvider(this._analyticsProvider) {
     _loadInitialData();
   }
 
@@ -137,6 +142,7 @@ class SignInProvider with ChangeNotifier {
         PreferencesHelper.vehicleDataKey, _selectedVehicle);
     _isUserConnected = true;
     notifyListeners();
+    _analyticsProvider.logLogin(_selectedDriver, _selectedVehicle);
   }
 
   Future<void> removeVehicles() async {

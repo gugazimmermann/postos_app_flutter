@@ -52,6 +52,9 @@ dependencies:
   flutter_local_notifications: ^15.1.1
   flutter_app_badger: ^1.5.0
   permission_handler: ^10.4.3
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  firebase_analytics: ^10.4.5
 
 dev_dependencies:
   flutter_test:

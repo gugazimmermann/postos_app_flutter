@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>78606081651-1sjv111ji4vvvocctk8macj7po03kq6t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.78606081651-1sjv111ji4vvvocctk8macj7po03kq6t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>78606081651-efapun3tepccosv9pcapndc56o9iagaq.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDwOulYzCE7Yjr2HYvP1b-vYr4Tmr9AMCQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>78606081651</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>br.com.touchsistemas.app</string>
+	<key>PROJECT_ID</key>
+	<string>touch-sistemas--postos</string>
+	<key>STORAGE_BUCKET</key>
+	<string>touch-sistemas--postos.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:78606081651:ios:038124a491017def181406</string>
+</dict>
+</plist>
