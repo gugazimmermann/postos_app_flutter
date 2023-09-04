@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'firebase_options.dart';
@@ -22,6 +23,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   runApp(const MyApp());
 }
 
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
   void _handleFirebaseMessagingToken(BuildContext context) async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
-    logger.d("FCMToken $fcmToken");
+    logger.w("FCMToken $fcmToken");
   }
 
   @override
