@@ -89,6 +89,30 @@ class ApiHelper {
     }
   }
 
+  static Future<ApiResponse<void>> sendFCMTokenAndTimestamp(
+      String driverID, String fcmToken, DateTime timestamp) async {
+    try {
+      var response = await http.post(
+        Uri.parse('${ApiConstants.baseUrl}/driver'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'driverID': driverID,
+          'fcmToken': fcmToken,
+          'timestamp': timestamp.toIso8601String(),
+        }),
+      );
+      if (response.statusCode == 200) {
+        return ApiResponse(data: null);
+      } else {
+        return ApiResponse(error: Exception('Error while sending data'));
+      }
+    } catch (e) {
+      return ApiResponse(error: Exception(e.toString()));
+    }
+  }
+
   static void handleApiError(Exception? error, BuildContext context) {
     if (error == null) return;
     if (error is SocketException) {

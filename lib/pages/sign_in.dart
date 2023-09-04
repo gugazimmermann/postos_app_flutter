@@ -139,7 +139,7 @@ class SignInState extends State<SignIn> with WidgetsBindingObserver {
         borderColor: ColorsConstants.primaryColor,
       ),
       CustomButton(
-        label: GeneralStrings.buttonSend,
+        label: GeneralStrings.buttonBack,
         onPressed: appProvider.signInProvider.resetSelection,
         textColor: ColorsConstants.white,
         buttonColor: ColorsConstants.primaryColor,

@@ -11,6 +11,7 @@ class PreferencesHelper {
   static const vehicleListKey = "vehicle_list";
   static const unreadNotificationsKey = "unread_notifications";
   static const backgroundLocationDeniedKey = "background_location_denied";
+  static const fcmTokenKey = "fcm_token";
 
   static Future<SharedPreferences> _getPrefs() async {
     return await SharedPreferences.getInstance();
@@ -87,5 +88,15 @@ class PreferencesHelper {
   static Future<bool?> getBackgroundLocationDenied() async {
     final prefs = await _getPrefs();
     return prefs.getBool(backgroundLocationDeniedKey);
+  }
+
+  static Future<void> saveFcmToken(String token) async {
+    final prefs = await _getPrefs();
+    prefs.setString(fcmTokenKey, token);
+  }
+
+  static Future<String?> getFcmToken() async {
+    final prefs = await _getPrefs();
+    return prefs.getString(fcmTokenKey);
   }
 }

@@ -4,15 +4,17 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'firebase_options.dart';
+
 import 'providers/app_provider.dart';
+
+import 'utils/api_helper.dart';
+import 'utils/shared_preferences.dart';
 
 import 'constants/strings.dart';
 import 'constants/colors.dart';
 
 import 'widgets/custom_app_bar.dart';
-
 import 'pages/sign_in.dart';
 import 'pages/home_tabs.dart';
 
@@ -38,15 +40,21 @@ class MyApp extends StatelessWidget {
     }
   }
 
-  void _handleFirebaseMessagingToken(BuildContext context) async {
-    final fcmToken = await FirebaseMessaging.instance.getToken();
+  void _handleFirebaseMessagingToken(AppProvider appProvider) async {
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
-    logger.w("FCMToken $fcmToken");
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    final timestamp = DateTime.now().toUtc();
+    final driver = appProvider.signInProvider.selectedDriver;
+    String? storedFcmToken = await PreferencesHelper.getFcmToken();
+    if (driver != null && fcmToken != null && storedFcmToken != fcmToken) {
+      ApiHelper.sendFCMTokenAndTimestamp(driver.id, fcmToken, timestamp);
+      PreferencesHelper.saveFcmToken(fcmToken);
+    }
+    logger.d('fcmToken: $fcmToken');
   }
 
   @override
   Widget build(BuildContext context) {
-    _handleFirebaseMessagingToken(context);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: ColorsConstants.primaryColor,
     ));
@@ -54,6 +62,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AppProvider(),
       child: Consumer<AppProvider>(builder: (context, appProvider, child) {
+        _handleFirebaseMessagingToken(appProvider);
         return MaterialApp(
           title: AppStrings.title,
           theme: ThemeData(
