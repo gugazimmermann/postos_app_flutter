@@ -1,4 +1,4 @@
-package com.example.touch_sistemas_postos
+package br.com.touchsistemas.app
 
 import io.flutter.embedding.android.FlutterActivity
 

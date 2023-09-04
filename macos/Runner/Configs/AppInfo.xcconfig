@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = touch_sistemas_postos
+PRODUCT_NAME = Touch Sistemas Postos;
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.postosFlutterApp
+PRODUCT_BUNDLE_IDENTIFIER = br.com.touchsistemas.app;
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

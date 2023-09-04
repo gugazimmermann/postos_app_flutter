@@ -18,6 +18,12 @@ import '../widgets/gas-station/gas_station_card.dart';
 class GasStationsTab extends StatelessWidget {
   const GasStationsTab({Key? key}) : super(key: key);
 
+  Future<void> _recarregarDados(BuildContext context) async {
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.locationProvider.getUserLocation();
+    await appProvider.updateGasStationsAndSchedules();
+  }
+
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
@@ -33,18 +39,22 @@ class GasStationsTab extends StatelessWidget {
             return const Center(
                 child: EmptyDataCard(text: GasStationStrings.noGasStations));
           } else {
-            return ListView.builder(
-              itemCount: gasStations.length,
-              itemBuilder: (context, index) {
-                return Slidable(
-                  startActionPane:
-                      slidableToMap(appProvider, gasStations[index]),
-                  child: GasStationCard(
-                    gasStation: gasStations[index],
-                    userLocation: appProvider.locationProvider.currentLocation,
-                  ),
-                );
-              },
+            return RefreshIndicator(
+              onRefresh: () => _recarregarDados(context),
+              child: ListView.builder(
+                itemCount: gasStations.length,
+                itemBuilder: (context, index) {
+                  return Slidable(
+                    startActionPane:
+                        slidableToMap(appProvider, gasStations[index]),
+                    child: GasStationCard(
+                      gasStation: gasStations[index],
+                      userLocation:
+                          appProvider.locationProvider.currentLocation,
+                    ),
+                  );
+                },
+              ),
             );
           }
         }

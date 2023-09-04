@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "touch_sistemas_postos" "\0"
+            VALUE "FileDescription", "Touch Sistemas Postos" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "touch_sistemas_postos" "\0"
+            VALUE "InternalName", "Touch Sistemas Postos" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "touch_sistemas_postos.exe" "\0"
-            VALUE "ProductName", "touch_sistemas_postos" "\0"
+            VALUE "ProductName", "Touch Sistemas Postos" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
