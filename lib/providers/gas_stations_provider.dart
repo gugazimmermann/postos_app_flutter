@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../utils/log.dart';
 import 'location_provider.dart';
 
 import '../models/driver.dart';
@@ -38,6 +39,7 @@ class GasStationsProvider with ChangeNotifier {
   }
 
   void onLocationChanged() {
+    logger.t(_locationProvider.currentLocation);
     if (_gasStations != null && _locationProvider.currentLocation != null) {
       for (var gasStation in _gasStations!) {
         const distance = Distance();

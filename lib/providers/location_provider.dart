@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 import '../constants/constants.dart';
+
 import '../utils/geofencing.dart';
 import '../utils/shared_preferences.dart';
 
@@ -35,7 +36,16 @@ class LocationProvider with ChangeNotifier {
       if (_permissionGranted == PermissionStatus.denied) {
         _permissionGranted = await location.requestPermission();
       }
+      await location.changeSettings(
+        accuracy: LocationAccuracy.high,
+        interval: 60 * 1000,
+      );
       await location.enableBackgroundMode(enable: true);
+      await location.changeNotificationOptions(
+          title: "Touch Sistemas Postos",
+          subtitle: "Acompanhamento de Localização de Postos",
+          description: "Notificação sobre Postos",
+          iconName: '@mipmap/ic_fuel_pump');
     } catch (e) {
       if (e is PlatformException && e.code == 'PERMISSION_DENIED') {
         await PreferencesHelper.setBackgroundLocationDenied(true);
@@ -68,7 +78,6 @@ class LocationProvider with ChangeNotifier {
           return;
         }
       }
-      location.changeSettings(accuracy: LocationAccuracy.high);
       _locationData = await location.getLocation();
       _startLocationListening();
     } catch (error) {
@@ -80,15 +89,11 @@ class LocationProvider with ChangeNotifier {
 
   void _startLocationListening() {
     _locationChangeSubscription ??=
-        location.onLocationChanged.listen((LocationData actualLocation) {
-      _locationData = actualLocation;
-      if (_locationData != null) {
-        _checkGeofence(
-            LatLng(_locationData!.latitude!, _locationData!.longitude!));
-      }
+        location.onLocationChanged.listen((LocationData currentLocation) {
+      _locationData = currentLocation;
       notifyListeners();
-      _locationChangeSubscription
-          ?.pause(Future.delayed(const Duration(seconds: 10)));
+      _checkGeofence(
+          LatLng(_locationData!.latitude!, _locationData!.longitude!));
     });
   }
 
