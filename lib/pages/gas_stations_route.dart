@@ -105,14 +105,14 @@ class GasStationsRouteState extends State<GasStationsRoute> {
     return MapOptions(
       center: LatLng(widget.gasStation.latitudeAsDouble,
           widget.gasStation.longitudeAsDouble),
-      zoom: 17.0,
+      zoom: 15.0,
     );
   }
 
   Marker gasStationMarker() {
     return Marker(
-      width: 64,
-      height: 64,
+      width: 48,
+      height: 48,
       point: LatLng(widget.gasStation.latitudeAsDouble,
           widget.gasStation.longitudeAsDouble),
       builder: (context) => GestureDetector(
@@ -129,21 +129,21 @@ class GasStationsRouteState extends State<GasStationsRoute> {
           child: Icon(
             MdiIcons.gasStation,
             color: ColorsConstants.mapGasStation,
-            size: 64,
+            size: 48,
           )),
     );
   }
 
   Marker driverMarker() {
     return Marker(
-      width: 64,
-      height: 64,
+      width: 48,
+      height: 48,
       point: LatLng(
           widget.userLocation!.latitude!, widget.userLocation!.longitude!),
       builder: (context) => Icon(
         MdiIcons.carConnected,
         color: ColorsConstants.mapDriver,
-        size: 64,
+        size: 48,
       ),
     );
   }

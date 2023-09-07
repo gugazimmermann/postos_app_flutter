@@ -29,8 +29,6 @@ class SchedulesTab extends StatelessWidget {
             return const Center(
                 child: EmptyDataCard(text: SchedulesStrings.noSchedule));
           } else {
-            schedules.sort((a, b) =>
-                DateTime.parse(b.date).compareTo(DateTime.parse(a.date)));
             return ListView.builder(
               itemCount: schedules.length,
               itemBuilder: (context, index) {

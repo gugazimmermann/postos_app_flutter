@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:touch_sistemas_postos/models/driver.dart';
-import 'package:touch_sistemas_postos/models/vehicle.dart';
+
+import '../models/driver.dart';
+import '../models/vehicle.dart';
 
 class AnalyticsProvider with ChangeNotifier {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;

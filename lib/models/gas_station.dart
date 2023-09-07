@@ -1,6 +1,8 @@
 import 'signature.dart';
 import 'gas_station_vehicle.dart';
 import 'gas_station_driver.dart';
+import 'gas_station_fuel_prices.dart';
+import 'gas_station_open_hours.dart';
 
 class GasStationModel {
   final String id;
@@ -16,6 +18,8 @@ class GasStationModel {
   final List<SignatureModel> signatures;
   final GasStationVehicleModel vehicle;
   final GasStationDriverModel driver;
+  final List<GasStationFuelPricesModel> fuelPrices;
+  final List<GasStationOpenHoursModel> openHours;
   double? distance;
 
   GasStationModel({
@@ -32,6 +36,8 @@ class GasStationModel {
     required this.signatures,
     required this.vehicle,
     required this.driver,
+    required this.fuelPrices,
+    required this.openHours,
     this.distance,
   });
 
@@ -41,6 +47,13 @@ class GasStationModel {
   factory GasStationModel.fromJson(Map<String, dynamic> json) {
     List<SignatureModel> signaturesList = (json['signatures'] as List)
         .map((item) => SignatureModel.fromJson(item))
+        .toList();
+    List<GasStationFuelPricesModel> fuelPricesList =
+        (json['fuelPrices'] as List)
+            .map((item) => GasStationFuelPricesModel.fromJson(item))
+            .toList();
+    List<GasStationOpenHoursModel> openHoursList = (json['openHours'] as List)
+        .map((item) => GasStationOpenHoursModel.fromJson(item))
         .toList();
 
     return GasStationModel(
@@ -57,6 +70,8 @@ class GasStationModel {
       signatures: signaturesList,
       vehicle: GasStationVehicleModel.fromJson(json['vehicle']),
       driver: GasStationDriverModel.fromJson(json['driver']),
+      fuelPrices: fuelPricesList,
+      openHours: openHoursList,
     );
   }
 
@@ -74,6 +89,8 @@ class GasStationModel {
       'signatures': signatures.map((item) => item.toJson()).toList(),
       'vehicle': vehicle.toJson(),
       'driver': driver.toJson(),
+      'fuelPrices': fuelPrices.map((item) => item.toJson()).toList(),
+      'openHours': openHours.map((item) => item.toJson()).toList(),
     };
   }
 }

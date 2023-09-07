@@ -59,6 +59,13 @@ abstract class GasStationStrings {
   static const String transactionsPlural = 'Abastecimentos Realizados';
   static const String transactionsSingular = 'Abastecimento Realizado';
   static const String transactionsIn = 'Abastecimentos em';
+  static const String openHoursTitle = 'Horários de Funcionamento';
+  static const String openHoursDay = 'Dia';
+  static const String openHoursTime = 'Horário';
+  static const String fuelPricesTitle = 'Preços dos Combustíveis';
+  static const String fuelPricesFuelType = 'Combustível';
+  static const String fuelPricesDate = 'Data';
+  static const String fuelPricesPrice = 'Valor';
 }
 
 abstract class SchedulesStrings {

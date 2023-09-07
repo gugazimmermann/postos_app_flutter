@@ -12,6 +12,9 @@ import '../../pages/gas_stations_products.dart';
 import '../../pages/gas_stations_route.dart';
 import '../../pages/gas_stations_transactions.dart';
 
+import 'gas_station_fuel_prices.dart';
+import 'gas_station_open_hours.dart';
+
 class GasStationDialog extends StatelessWidget {
   final GasStationModel gasStation;
   final LocationData? userLocation;
@@ -35,13 +38,13 @@ class GasStationDialog extends StatelessWidget {
             const SizedBox(height: 16.0),
             gasStationContactRow(context),
             const SizedBox(height: 16.0),
-            gasStationAddress(),
+            gasStationAddress(context),
             divider(),
             gasStationFuelTypes(),
             divider(),
-            gasStationProducts(context),
-            divider(),
             gasStationSignatures(),
+            divider(),
+            gasStationProducts(context),
             divider(),
             const SizedBox(height: 4.0),
             gasStationTransactions(context),
@@ -64,48 +67,90 @@ class GasStationDialog extends StatelessWidget {
   }
 
   Row gasStationContactRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        IconButton(
-          onPressed: () =>
-              _launchUrl("tel:${_cleanPhoneNumber(gasStation.phone)}", context),
-          icon: const Icon(
-            Icons.phone,
-            size: 36,
-            color: ColorsConstants.textColor,
-          ),
+    List<Widget> icons = [
+      IconButton(
+        onPressed: () =>
+            _launchUrl("tel:${_cleanPhoneNumber(gasStation.phone)}", context),
+        icon: const Icon(
+          Icons.phone,
+          size: 36,
+          color: ColorsConstants.textColor,
         ),
+      ),
+      IconButton(
+        onPressed: () => _launchUrl("mailto:${gasStation.email}", context),
+        icon: const Icon(
+          Icons.email,
+          size: 36,
+          color: ColorsConstants.textColor,
+        ),
+      ),
+      IconButton(
+        onPressed: () {
+          _openMap(context);
+        },
+        icon: Icon(
+          MdiIcons.mapMarkerRadius,
+          size: 36,
+          color: ColorsConstants.textColor,
+        ),
+      ),
+    ];
+    if (gasStation.openHours.isNotEmpty) {
+      icons.add(
         IconButton(
           onPressed: () {
-            _openMap(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return GasStationOpenHours(gasStation: gasStation);
+              },
+            );
           },
           icon: Icon(
-            MdiIcons.mapMarkerRadius,
+            MdiIcons.storeClock,
             size: 36,
             color: ColorsConstants.textColor,
           ),
         ),
+      );
+    }
+    if (gasStation.fuelPrices.isNotEmpty) {
+      icons.add(
         IconButton(
-          onPressed: () => _launchUrl("mailto:${gasStation.email}", context),
-          icon: const Icon(
-            Icons.email,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return GasStationFuelPrices(gasStation: gasStation);
+              },
+            );
+          },
+          icon: Icon(
+            MdiIcons.currencyUsd,
             size: 36,
             color: ColorsConstants.textColor,
           ),
         ),
-      ],
+      );
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: icons,
     );
   }
 
-  Text gasStationAddress() {
-    return Text(
-      '${gasStation.address}, ${gasStation.city}, ${gasStation.state}',
-      style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18.0,
-          color: ColorsConstants.textColor),
-      textAlign: TextAlign.center,
+  Widget gasStationAddress(BuildContext context) {
+    return InkWell(
+      onTap: () => _openMap(context),
+      child: Text(
+        '${gasStation.address}, ${gasStation.city}, ${gasStation.state}',
+        style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+            color: ColorsConstants.textColor),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
@@ -128,19 +173,17 @@ class GasStationDialog extends StatelessWidget {
   Widget gasStationFuelTypesList() {
     final fuelTypes = gasStation.vehicle.fuelTypes;
     if (fuelTypes.isEmpty) {
-      return const Text(
-        GasStationStrings.fuelTypesAll,
-        style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
-      );
+      return const Text(GasStationStrings.fuelTypesAll,
+          style: TextStyle(fontSize: 16.0, color: ColorsConstants.textColor),
+          textAlign: TextAlign.center);
     } else {
       final fuelTypeNames = fuelTypes.map((type) => type.name).join(', ');
-      return Text(
-        fuelTypeNames,
-        style: const TextStyle(
-            fontSize: 16.0,
-            color: ColorsConstants.primaryColor,
-            fontWeight: FontWeight.bold),
-      );
+      return Text(fuelTypeNames,
+          style: const TextStyle(
+              fontSize: 16.0,
+              color: ColorsConstants.primaryColor,
+              fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center);
     }
   }
 

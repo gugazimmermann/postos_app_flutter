@@ -21,6 +21,11 @@ class SchedulesProvider with ChangeNotifier {
       var response = await ApiHelper.fetchSchedulesData(
           selectedDriver.company.id, selectedVehicle.id);
       if (response.data != null) {
+        response.data!.sort((a, b) {
+          DateTime dateA = DateTime.parse(a.date);
+          DateTime dateB = DateTime.parse(b.date);
+          return dateA.compareTo(dateB);
+        });
         _schedules.value = response.data;
       } else {
         errorNotifier.value = response.error?.toString();

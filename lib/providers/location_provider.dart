@@ -38,7 +38,7 @@ class LocationProvider with ChangeNotifier {
       }
       await location.changeSettings(
         accuracy: LocationAccuracy.high,
-        interval: 60 * 1000,
+        interval: 5 * 1000,
       );
       await location.enableBackgroundMode(enable: true);
       await location.changeNotificationOptions(

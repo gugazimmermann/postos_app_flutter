@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:touch_sistemas_postos/providers/analytics_provider.dart';
 
 import '../models/driver.dart';
 import '../models/vehicle.dart';
@@ -10,6 +9,8 @@ import '../constants/strings.dart';
 import '../utils/api_helper.dart';
 import '../utils/is_valid_cpf.dart';
 import '../utils/shared_preferences.dart';
+
+import 'analytics_provider.dart';
 
 class SignInProvider with ChangeNotifier {
   final AnalyticsProvider _analyticsProvider;

@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
     if (driver != null && fcmToken != null && storedFcmToken != fcmToken) {
       ApiHelper.sendFCMTokenAndTimestamp(driver.id, fcmToken, timestamp);
       PreferencesHelper.saveFcmToken(fcmToken);
+      logger.d('new fcmToken: $fcmToken');
     }
-    logger.d('fcmToken: $fcmToken');
   }
 
   @override
